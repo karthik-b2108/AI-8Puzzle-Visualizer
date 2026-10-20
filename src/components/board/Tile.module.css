@@ -1,0 +1,129 @@
+.tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  padding: 0;
+  color: var(--tile-digit);
+  background: var(--tile-face);
+  border: 1px solid var(--tile-edge);
+  border-radius: var(--radius-md);
+  box-shadow: var(--tile-shadow);
+  user-select: none;
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.digit {
+  font-family: var(--font-mono);
+  font-size: var(--tile-font);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.sm {
+  --tile-font: var(--text-base);
+  border-radius: var(--radius-sm);
+}
+
+.md {
+  --tile-font: var(--text-lg);
+}
+
+.lg {
+  --tile-font: var(--text-2xl);
+  border-radius: var(--radius-lg);
+}
+
+/* The blank: a recessed, subtly checkered hole rather than a digit. */
+.blank {
+  background: color-mix(in srgb, var(--board-face) 72%, var(--tile-face));
+  border-color: color-mix(in srgb, var(--board-edge) 70%, transparent);
+  box-shadow: none;
+}
+
+.hole {
+  width: 64%;
+  height: 64%;
+  background-color: var(--blank-face);
+  background-image: repeating-conic-gradient(
+    from 0deg,
+    var(--blank-checker-a) 0deg 90deg,
+    var(--blank-checker-b) 90deg 180deg
+  );
+  background-size: 8px 8px;
+  border: 1px solid color-mix(in srgb, var(--blank-inset) 40%, transparent);
+  border-radius: var(--radius-sm);
+  box-shadow: inset 0 2px 5px var(--blank-inset);
+}
+
+.interactive {
+  cursor: pointer;
+}
+
+.interactive:hover:not(:disabled) {
+  background: var(--tile-face-hover);
+  border-color: var(--tile-edge-hover);
+  box-shadow: var(--tile-shadow-hover);
+  transform: translateY(-1px);
+}
+
+.interactive:active:not(:disabled) {
+  background: var(--tile-face-active);
+  box-shadow: var(--tile-shadow-pressed);
+  transform: scale(0.97);
+}
+
+.interactive:focus-visible {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: var(--shadow-focus);
+  z-index: 1;
+}
+
+.selected {
+  color: var(--accent-strong);
+  background: var(--tile-selected-face);
+  border-color: var(--tile-selected-edge);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 34%, transparent);
+}
+
+.selected .hole {
+  border-color: var(--tile-selected-edge);
+}
+
+.highlighted {
+  border-color: var(--status-frontier);
+  animation: tile-highlight 1.4s var(--ease-in-out) infinite;
+}
+
+@keyframes tile-highlight {
+  0%,
+  100% {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--status-frontier) 36%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--status-frontier) 8%, transparent);
+  }
+}
+
+.dimmed {
+  opacity: 0.38;
+}
+
+.tile:disabled {
+  color: var(--text-subtle);
+  background: var(--surface-2);
+  border-color: var(--border-subtle);
+  box-shadow: none;
+  cursor: not-allowed;
+}

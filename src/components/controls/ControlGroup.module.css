@@ -1,0 +1,11 @@
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+/* Icon buttons align with the depth field's input, below its label. */
+.group > button {
+  margin-top: calc(var(--text-xs) * 1.2 + var(--space-1));
+}

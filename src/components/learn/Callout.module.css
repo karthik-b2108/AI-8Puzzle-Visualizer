@@ -1,6 +1,7 @@
 .callout {
   --callout-accent: var(--info);
   --callout-soft: var(--info-soft);
+  --callout-ink: color-mix(in srgb, var(--callout-accent) 75%, var(--text));
 
   margin: var(--space-5) 0;
   padding: var(--space-4) var(--space-5);
@@ -32,7 +33,7 @@
 
 .badge {
   padding: 1px 7px;
-  color: var(--callout-accent);
+  color: var(--callout-ink);
   font-size: var(--text-xs);
   font-weight: var(--weight-semibold);
   letter-spacing: 0.04em;

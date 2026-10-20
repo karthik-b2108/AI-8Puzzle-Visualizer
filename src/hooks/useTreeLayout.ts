@@ -20,9 +20,14 @@ export interface StateNodeData extends Record<string, unknown> {
   isHovered: boolean
   isSelected: boolean
   isOnSolutionPath: boolean
+  /** Zero-based position along the solution path, or null when not on it. */
+  solutionIndex?: number | null
   isGoal: boolean
   isCollapsed: boolean
   depth: number
+  /** Offset from the parent's layout position; used for the enter animation. */
+  enterFrom?: { x: number; y: number }
+  reducedMotion?: boolean
   onExpandOne: (id: number) => void
   onExpandSubtree: (id: number) => void
 }
@@ -30,7 +35,14 @@ export interface StateNodeData extends Record<string, unknown> {
 export interface TreeEdgeData extends Record<string, unknown> {
   move: Move
   solution: boolean
+  /** One-based position along the solution path, or null when not on it. */
+  solutionIndex?: number | null
   status: Status
+  /** Transient backtrack pulse, set by TreeCanvas. */
+  pulse?: boolean
+  pulseToken?: number
+  pulseDirection?: 'up' | 'down'
+  pulseDelay?: number
 }
 
 export interface TreeLayout {
@@ -51,6 +63,7 @@ const emptyBase: BaseLayout = { nodes: [], edges: [], version: '0:0:0' }
 function buildBaseLayout(
   snapshot: SearchSnapshot,
   visibility: VisibilityResult,
+  reducedMotion: boolean,
   onExpandOne: (id: number) => void,
   onExpandSubtree: (id: number) => void,
 ): BaseLayout {
@@ -72,15 +85,23 @@ function buildBaseLayout(
 
   const solutionPath = snapshot.result?.path ?? null
   const solutionNodes = new Set<number>(solutionPath ?? [])
+  const solutionNodeIndex = new Map<number, number>()
+  if (solutionPath) {
+    solutionPath.forEach((id, index) => solutionNodeIndex.set(id, index))
+  }
   const solutionEdges = new Set<string>()
+  const solutionEdgeIndex = new Map<string, number>()
   if (solutionPath) {
     for (let i = 1; i < solutionPath.length; i += 1) {
-      solutionEdges.add(`${solutionPath[i - 1]}:${solutionPath[i]}`)
+      const key = `${solutionPath[i - 1]}:${solutionPath[i]}`
+      solutionEdges.add(key)
+      solutionEdgeIndex.set(key, i)
     }
   }
 
   const nodes: Node<StateNodeData>[] = layoutRoot.descendants().map((point) => {
     const node = point.data
+    const parentPoint = point.parent
     return {
       id: String(node.id),
       type: 'state',
@@ -100,9 +121,14 @@ function buildBaseLayout(
         isHovered: false,
         isSelected: false,
         isOnSolutionPath: solutionNodes.has(node.id),
+        solutionIndex: solutionNodeIndex.get(node.id) ?? null,
         isGoal: node.status === 'goal',
         isCollapsed: visibility.collapsed.has(node.id),
         depth: node.depth,
+        enterFrom: parentPoint
+          ? { x: parentPoint.x - point.x, y: parentPoint.y - point.y }
+          : { x: 0, y: -12 },
+        reducedMotion,
         onExpandOne,
         onExpandSubtree,
       },
@@ -113,6 +139,7 @@ function buildBaseLayout(
   for (const node of Object.values(snapshot.nodes)) {
     if (node.parentId === null || node.parentId === undefined) continue
     if (!visibility.visible.has(node.id) || !visibility.visible.has(node.parentId)) continue
+    const key = `${node.parentId}:${node.id}`
     edges.push({
       id: `e-${node.parentId}-${node.id}`,
       source: String(node.parentId),
@@ -121,7 +148,8 @@ function buildBaseLayout(
       selectable: false,
       data: {
         move: node.move,
-        solution: solutionEdges.has(`${node.parentId}:${node.id}`),
+        solution: solutionEdges.has(key),
+        solutionIndex: solutionEdgeIndex.get(key) ?? null,
         status: node.status,
       },
     })
@@ -143,6 +171,7 @@ function buildBaseLayout(
 export function useTreeLayout(
   snapshot: SearchSnapshot,
   visibility: VisibilityResult,
+  reducedMotion = false,
 ): TreeLayout {
   const hoveredId = useTreeViewStore((state) => state.hoveredId)
   const selectedId = useTreeViewStore((state) => state.selectedId)
@@ -164,8 +193,8 @@ export function useTreeLayout(
   )
 
   const base = useMemo(
-    () => buildBaseLayout(snapshot, visibility, onExpandOne, onExpandSubtree),
-    [snapshot, visibility, onExpandOne, onExpandSubtree],
+    () => buildBaseLayout(snapshot, visibility, reducedMotion, onExpandOne, onExpandSubtree),
+    [snapshot, visibility, reducedMotion, onExpandOne, onExpandSubtree],
   )
 
   const nodes = useMemo(() => {

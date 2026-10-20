@@ -77,6 +77,27 @@ describe('useTreeLayout', () => {
       const node = result.current.nodes.find((candidate) => Number(candidate.id) === id)
       expect(node?.data.isOnSolutionPath).toBe(true)
     }
+    for (let i = 1; i < path.length; i += 1) {
+      const edge = result.current.edges.find(
+        (candidate) =>
+          Number(candidate.source) === path[i - 1] && Number(candidate.target) === path[i],
+      )
+      expect(edge?.data?.solutionIndex).toBe(i)
+    }
+    const goalNode = result.current.nodes.find((candidate) => Number(candidate.id) === path.at(-1))
+    expect(goalNode?.data.solutionIndex).toBe(path.length - 1)
+  })
+
+  it('records the parent offset for the enter animation and honours reduced motion', () => {
+    const visibility = computeVisibility(found, new Map(), false)
+    const { result } = renderHook(() => useTreeLayout(found, visibility, true))
+    const root = result.current.nodes.find((node) => node.id === '0')
+    const child = result.current.nodes.find((node) => Number(node.id) !== 0)
+
+    expect(root?.data.enterFrom).toEqual({ x: 0, y: -12 })
+    expect(root?.data.reducedMotion).toBe(true)
+    expect(child?.data.enterFrom).toBeDefined()
+    expect(child?.data.enterFrom?.y).toBeLessThan(0)
   })
 
   it('decorates nodes from the hover and selection store', () => {

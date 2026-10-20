@@ -1,5 +1,6 @@
 import { memo } from 'react'
-import type { KeyboardEvent } from 'react'
+import type { CSSProperties, KeyboardEvent } from 'react'
+import { motion } from 'framer-motion'
 import { Handle, Position } from '@xyflow/react'
 import type { Node, NodeProps } from '@xyflow/react'
 import type { StateNodeData } from '../../hooks/useTreeLayout'
@@ -15,10 +16,25 @@ function digitsOf(state: number): number[] {
 }
 
 function StateNodeComponent({ data }: NodeProps<StateNodeType>) {
-  const { node, hidden, isCurrent, isHovered, isSelected, isOnSolutionPath, isGoal, depth } =
-    data
+  const {
+    node,
+    hidden,
+    isCurrent,
+    isHovered,
+    isSelected,
+    isOnSolutionPath,
+    solutionIndex,
+    isGoal,
+    depth,
+    enterFrom,
+    reducedMotion,
+  } = data
   const setSelected = useTreeViewStore((state) => state.setSelected)
   const digits = digitsOf(node.state)
+  const from = enterFrom ?? { x: 0, y: -12 }
+  const style = {
+    '--solution-delay': `${(solutionIndex ?? 0) * 120}ms`,
+  } as CSSProperties
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter' || event.key === ' ') {
@@ -28,7 +44,7 @@ function StateNodeComponent({ data }: NodeProps<StateNodeType>) {
   }
 
   return (
-    <div
+    <motion.div
       className={styles.node}
       data-status={node.status}
       data-current={isCurrent || undefined}
@@ -38,6 +54,14 @@ function StateNodeComponent({ data }: NodeProps<StateNodeType>) {
       data-goal={isGoal || undefined}
       data-collapsed={data.isCollapsed || undefined}
       data-duplicate={node.status === 'duplicate' || undefined}
+      style={style}
+      initial={reducedMotion ? false : { opacity: 0, scale: 0.72, x: from.x, y: from.y }}
+      animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+      transition={
+        reducedMotion
+          ? { duration: 0 }
+          : { type: 'spring', stiffness: 380, damping: 32, mass: 0.6 }
+      }
       tabIndex={0}
       role="group"
       aria-roledescription="search node"
@@ -84,7 +108,7 @@ function StateNodeComponent({ data }: NodeProps<StateNodeType>) {
         className={styles.handle}
         isConnectable={false}
       />
-    </div>
+    </motion.div>
   )
 }
 

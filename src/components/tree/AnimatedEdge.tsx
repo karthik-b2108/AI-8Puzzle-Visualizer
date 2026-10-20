@@ -30,11 +30,14 @@ export function AnimatedEdge({
 
   const edgeData = data as TreeEdgeData | undefined
   const solution = edgeData?.solution ?? false
+  const solutionIndex = edgeData?.solutionIndex ?? 0
   const color = edgeData ? statusColor(edgeData.status) : 'var(--border-strong)'
   const safeId = id.replace(ID_SAFE, '_')
   const markerId = `tree-arrow-${safeId}`
   const gradientId = `tree-solution-${safeId}`
   const stroke = solution ? `url(#${gradientId})` : color
+  const pulse = edgeData?.pulse ?? false
+  const pulseUp = edgeData?.pulseDirection === 'up'
 
   return (
     <g>
@@ -69,6 +72,24 @@ export function AnimatedEdge({
           strokeWidth: solution ? 2.4 : 1.5,
         }}
       />
+      {solution ? (
+        <path
+          key={`${id}-solution-${solutionIndex}`}
+          d={path}
+          className={styles.solutionSeq}
+          style={{ animationDelay: `${solutionIndex * 120}ms` }}
+          aria-hidden="true"
+        />
+      ) : null}
+      {pulse ? (
+        <path
+          key={`${id}-pulse-${edgeData?.pulseToken ?? 0}`}
+          d={path}
+          className={`${styles.pulse} ${pulseUp ? styles.pulseUp : styles.pulseDown}`}
+          style={{ animationDelay: `${edgeData?.pulseDelay ?? 0}ms` }}
+          aria-hidden="true"
+        />
+      ) : null}
     </g>
   )
 }

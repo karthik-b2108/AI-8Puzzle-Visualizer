@@ -155,6 +155,29 @@
     var(--shadow-sm);
 }
 
+/* Glow the path in order, root to goal. The current node keeps its own pulse. */
+.node[data-solution]:not([data-current]) {
+  animation: solutionReveal var(--dur-slow) var(--ease-out) var(--solution-delay, 0ms) both;
+}
+
+@keyframes solutionReveal {
+  0% {
+    box-shadow:
+      0 0 0 1px var(--accent-soft-strong),
+      var(--shadow-sm);
+  }
+  45% {
+    box-shadow:
+      0 0 0 3px var(--accent-soft-strong),
+      0 0 18px var(--accent);
+  }
+  100% {
+    box-shadow:
+      0 0 0 1px var(--accent-soft-strong),
+      var(--shadow-sm);
+  }
+}
+
 .node[data-goal] {
   border-color: var(--status-goal);
   background: linear-gradient(180deg, var(--surface), var(--status-goal-soft));
@@ -199,6 +222,10 @@
 }
 
 :global([data-reduced-motion='true']) .node[data-current] {
+  animation: none;
+}
+
+:global([data-reduced-motion='true']) .node[data-solution] {
   animation: none;
 }
 

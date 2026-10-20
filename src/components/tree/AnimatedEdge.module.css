@@ -11,6 +11,79 @@
   filter: drop-shadow(0 0 3px var(--accent));
 }
 
+/* A short highlight travelling from root to goal, staggered per edge. */
+.solutionSeq {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 10 26;
+  pointer-events: none;
+  opacity: 0;
+  animation: solutionFlow 900ms var(--ease-out) both;
+}
+
+@keyframes solutionFlow {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: 96;
+  }
+  30% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    stroke-dashoffset: -96;
+  }
+}
+
+/* Backtracking pulse: a dash that travels up or down the edge to the new current. */
+.pulse {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-dasharray: 5 16;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.pulseUp {
+  animation: pulseUp 650ms linear both;
+}
+
+.pulseDown {
+  animation: pulseDown 650ms linear both;
+}
+
+@keyframes pulseUp {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    stroke-dashoffset: -130;
+  }
+}
+
+@keyframes pulseDown {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    stroke-dashoffset: 130;
+  }
+}
+
 @keyframes drawEdge {
   to {
     stroke-dashoffset: 0;
@@ -23,10 +96,20 @@
   animation: none;
 }
 
+:global([data-reduced-motion='true']) .solutionSeq,
+:global([data-reduced-motion='true']) .pulse {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .edge {
     stroke-dasharray: none;
     stroke-dashoffset: 0;
     animation: none;
+  }
+
+  .solutionSeq,
+  .pulse {
+    display: none;
   }
 }

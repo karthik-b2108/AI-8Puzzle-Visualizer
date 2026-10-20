@@ -50,6 +50,57 @@
   pointer-events: none;
 }
 
+/* Ghost cards left behind when undo removes nodes; they fade out in order. */
+.ghosts {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ghost {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-weight: var(--weight-semibold);
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transform-origin: top left;
+  animation: ghostOut 280ms var(--ease-out) both;
+}
+
+.ghost[data-status='visited'] {
+  border-color: var(--status-visited);
+}
+
+.ghost[data-status='duplicate'] {
+  border-color: var(--status-duplicate);
+}
+
+.ghost[data-status='goal'] {
+  border-color: var(--status-goal);
+}
+
+@keyframes ghostOut {
+  0% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+}
+
+:global([data-reduced-motion='true']) .ghosts {
+  display: none;
+}
+
 /* React Flow chrome, themed with tokens. */
 .wrap :global(.react-flow__controls-button) {
   color: var(--text-muted);

@@ -1,0 +1,33 @@
+{
+  "config": {
+    "start": 123745896,
+    "goal": 123456789,
+    "depthLimit": 6
+  },
+  "nodes": {
+    "0": {
+      "id": 0,
+      "state": 123745896,
+      "parentId": null,
+      "depth": 0,
+      "move": null,
+      "status": "frontier",
+      "children": []
+    }
+  },
+  "stack": [
+    0
+  ],
+  "visited": [],
+  "currentId": null,
+  "parentOfCurrentId": null,
+  "metrics": {
+    "generated": 1,
+    "explored": 0,
+    "maxDepth": 0,
+    "elapsedMs": 0
+  },
+  "result": null,
+  "canUndo": false,
+  "canRedo": false
+}

@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Parallel worktrees
+.worktrees/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -23,3 +26,6 @@ dist-ssr
 *.sln
 *.sw?
 docs/
+
+# TypeScript build info
+.tsbuildinfo/

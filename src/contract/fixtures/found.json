@@ -1,0 +1,941 @@
+{
+  "config": {
+    "start": 123745896,
+    "goal": 123456789,
+    "depthLimit": 6
+  },
+  "nodes": {
+    "0": {
+      "id": 0,
+      "state": 123745896,
+      "parentId": null,
+      "depth": 0,
+      "move": null,
+      "status": "visited",
+      "children": [
+        1,
+        2,
+        3
+      ]
+    },
+    "1": {
+      "id": 1,
+      "state": 123795846,
+      "parentId": 0,
+      "depth": 1,
+      "move": "U",
+      "status": "visited",
+      "children": [
+        4,
+        5,
+        6
+      ]
+    },
+    "2": {
+      "id": 2,
+      "state": 123745986,
+      "parentId": 0,
+      "depth": 1,
+      "move": "L",
+      "status": "visited",
+      "children": [
+        55
+      ]
+    },
+    "3": {
+      "id": 3,
+      "state": 123745869,
+      "parentId": 0,
+      "depth": 1,
+      "move": "R",
+      "status": "frontier",
+      "children": []
+    },
+    "4": {
+      "id": 4,
+      "state": 193725846,
+      "parentId": 1,
+      "depth": 2,
+      "move": "U",
+      "status": "visited",
+      "children": [
+        7,
+        8
+      ]
+    },
+    "5": {
+      "id": 5,
+      "state": 123975846,
+      "parentId": 1,
+      "depth": 2,
+      "move": "L",
+      "status": "visited",
+      "children": [
+        23,
+        24
+      ]
+    },
+    "6": {
+      "id": 6,
+      "state": 123759846,
+      "parentId": 1,
+      "depth": 2,
+      "move": "R",
+      "status": "visited",
+      "children": [
+        39,
+        40
+      ]
+    },
+    "7": {
+      "id": 7,
+      "state": 913725846,
+      "parentId": 4,
+      "depth": 3,
+      "move": "L",
+      "status": "visited",
+      "children": [
+        9
+      ]
+    },
+    "8": {
+      "id": 8,
+      "state": 139725846,
+      "parentId": 4,
+      "depth": 3,
+      "move": "R",
+      "status": "visited",
+      "children": [
+        16
+      ]
+    },
+    "9": {
+      "id": 9,
+      "state": 713925846,
+      "parentId": 7,
+      "depth": 4,
+      "move": "D",
+      "status": "visited",
+      "children": [
+        10,
+        11
+      ]
+    },
+    "10": {
+      "id": 10,
+      "state": 713825946,
+      "parentId": 9,
+      "depth": 5,
+      "move": "D",
+      "status": "visited",
+      "children": [
+        12
+      ]
+    },
+    "11": {
+      "id": 11,
+      "state": 713295846,
+      "parentId": 9,
+      "depth": 5,
+      "move": "R",
+      "status": "visited",
+      "children": [
+        13,
+        14,
+        15
+      ]
+    },
+    "12": {
+      "id": 12,
+      "state": 713825496,
+      "parentId": 10,
+      "depth": 6,
+      "move": "R",
+      "status": "visited",
+      "children": []
+    },
+    "13": {
+      "id": 13,
+      "state": 793215846,
+      "parentId": 11,
+      "depth": 6,
+      "move": "U",
+      "status": "visited",
+      "children": []
+    },
+    "14": {
+      "id": 14,
+      "state": 713245896,
+      "parentId": 11,
+      "depth": 6,
+      "move": "D",
+      "status": "visited",
+      "children": []
+    },
+    "15": {
+      "id": 15,
+      "state": 713259846,
+      "parentId": 11,
+      "depth": 6,
+      "move": "R",
+      "status": "visited",
+      "children": []
+    },
+    "16": {
+      "id": 16,
+      "state": 135729846,
+      "parentId": 8,
+      "depth": 4,
+      "move": "D",
+      "status": "visited",
+      "children": [
+        17,
+        18
+      ]
+    },
+    "17": {
+      "id": 17,
+      "state": 135726849,
+      "parentId": 16,
+      "depth": 5,
+      "move": "D",
+      "status": "visited",
+      "children": [
+        19
+      ]
+    },
+    "18": {
+      "id": 18,
+      "state": 135792846,
+      "parentId": 16,
+      "depth": 5,
+      "move": "L",
+      "status": "visited",
+      "children": [
+        20,
+        21,
+        22
+      ]
+    },
+    "19": {
+      "id": 19,
+      "state": 135726894,
+      "parentId": 17,
+      "depth": 6,
+      "move": "L",
+      "status": "visited",
+      "children": []
+    },
+    "20": {
+      "id": 20,
+      "state": 195732846,
+      "parentId": 18,
+      "depth": 6,
+      "move": "U",
+      "status": "visited",
+      "children": []
+    },
+    "21": {
+      "id": 21,
+      "state": 135742896,
+      "parentId": 18,
+      "depth": 6,
+      "move": "D",
+      "status": "visited",
+      "children": []
+    },
+    "22": {
+      "id": 22,
+      "state": 135972846,
+      "parentId": 18,
+      "depth": 6,
+      "move": "L",
+      "status": "visited",
+      "children": []
+    },
+    "23": {
+      "id": 23,
+      "state": 923175846,
+      "parentId": 5,
+      "depth": 3,
+      "move": "U",
+      "status": "visited",
+      "children": [
+        25
+      ]
+    },
+    "24": {
+      "id": 24,
+      "state": 123875946,
+      "parentId": 5,
+      "depth": 3,
+      "move": "D",
+      "status": "visited",
+      "children": [
+        32
+      ]
+    },
+    "25": {
+      "id": 25,
+      "state": 293175846,
+      "parentId": 23,
+      "depth": 4,
+      "move": "R",
+      "status": "visited",
+      "children": [
+        26,
+        27
+      ]
+    },
+    "26": {
+      "id": 26,
+      "state": 273195846,
+      "parentId": 25,
+      "depth": 5,
+      "move": "D",
+      "status": "visited",
+      "children": [
+        28,
+        29,
+        30
+      ]
+    },
+    "27": {
+      "id": 27,
+      "state": 239175846,
+      "parentId": 25,
+      "depth": 5,
+      "move": "R",
+      "status": "visited",
+      "children": [
+        31
+      ]
+    },
+    "28": {
+      "id": 28,
+      "state": 273145896,
+      "parentId": 26,
+      "depth": 6,
+      "move": "D",
+      "status": "visited",
+      "children": []
+    },
+    "29": {
+      "id": 29,
+      "state": 273915846,
+      "parentId": 26,
+      "depth": 6,
+      "move": "L",
+      "status": "visited",
+      "children": []
+    },
+    "30": {
+      "id": 30,
+      "state": 273159846,
+      "parentId": 26,
+      "depth": 6,
+      "move": "R",
+      "status": "visited",
+      "children": []
+    },
+    "31": {
+      "id": 31,
+      "state": 235179846,
+      "parentId": 27,
+      "depth": 6,
+      "move": "D",
+      "status": "visited",
+      "children": []
+    },
+    "32": {
+      "id": 32,
+      "state": 123875496,
+      "parentId": 24,
+      "depth": 4,
+      "move": "R",
+      "status": "visited",
+      "children": [
+        33,
+        34
+      ]
+    },
+    "33": {
+      "id": 33,
+      "state": 123895476,
+      "parentId": 32,
+      "depth": 5,
+      "move": "U",
+      "status": "visited",
+      "children": [
+        35,
+        36,
+        37
+      ]
+    },
+    "34": {
+      "id": 34,
+      "state": 123875469,
+      "parentId": 32,
+      "depth": 5,
+      "move": "R",
+      "status": "visited",
+      "children": [
+        38
+      ]
+    },
+    "35": {
+      "id": 35,
+      "state": 193825476,
+      "parentId": 33,
+      "depth": 6,
+      "move": "U",
+      "status": "visited",
+      "children": []
+    },
+    "36": {
+      "id": 36,
+      "state": 123985476,
+      "parentId": 33,
+      "depth": 6,
+      "move": "L",
+      "status": "visited",
+      "children": []
+    },
+    "37": {
+      "id": 37,
+      "state": 123859476,
+      "parentId": 33,
+      "depth": 6,
+      "move": "R",
+      "status": "visited",
+      "children": []
+    },
+    "38": {
+      "id": 38,
+      "state": 123879465,
+      "parentId": 34,
+      "depth": 6,
+      "move": "U",
+      "status": "visited",
+      "children": []
+    },
+    "39": {
+      "id": 39,
+      "state": 129753846,
+      "parentId": 6,
+      "depth": 3,
+      "move": "U",
+      "status": "visited",
+      "children": [
+        41
+      ]
+    },
+    "40": {
+      "id": 40,
+      "state": 123756849,
+      "parentId": 6,
+      "depth": 3,
+      "move": "D",
+      "status": "visited",
+      "children": [
+        48
+      ]
+    },
+    "41": {
+      "id": 41,
+      "state": 192753846,
+      "parentId": 39,
+      "depth": 4,
+      "move": "L",
+      "status": "visited",
+      "children": [
+        42,
+        43
+      ]
+    },
+    "42": {
+      "id": 42,
+      "state": 152793846,
+      "parentId": 41,
+      "depth": 5,
+      "move": "D",
+      "status": "visited",
+      "children": [
+        44,
+        45,
+        46
+      ]
+    },
+    "43": {
+      "id": 43,
+      "state": 912753846,
+      "parentId": 41,
+      "depth": 5,
+      "move": "L",
+      "status": "visited",
+      "children": [
+        47
+      ]
+    },
+    "44": {
+      "id": 44,
+      "state": 152743896,
+      "parentId": 42,
+      "depth": 6,
+      "move": "D",
+      "status": "visited",
+      "children": []
+    },
+    "45": {
+      "id": 45,
+      "state": 152973846,
+      "parentId": 42,
+      "depth": 6,
+      "move": "L",
+      "status": "visited",
+      "children": []
+    },
+    "46": {
+      "id": 46,
+      "state": 152739846,
+      "parentId": 42,
+      "depth": 6,
+      "move": "R",
+      "status": "visited",
+      "children": []
+    },
+    "47": {
+      "id": 47,
+      "state": 712953846,
+      "parentId": 43,
+      "depth": 6,
+      "move": "D",
+      "status": "visited",
+      "children": []
+    },
+    "48": {
+      "id": 48,
+      "state": 123756894,
+      "parentId": 40,
+      "depth": 4,
+      "move": "L",
+      "status": "visited",
+      "children": [
+        49,
+        50
+      ]
+    },
+    "49": {
+      "id": 49,
+      "state": 123796854,
+      "parentId": 48,
+      "depth": 5,
+      "move": "U",
+      "status": "visited",
+      "children": [
+        51,
+        52,
+        53
+      ]
+    },
+    "50": {
+      "id": 50,
+      "state": 123756984,
+      "parentId": 48,
+      "depth": 5,
+      "move": "L",
+      "status": "visited",
+      "children": [
+        54
+      ]
+    },
+    "51": {
+      "id": 51,
+      "state": 193726854,
+      "parentId": 49,
+      "depth": 6,
+      "move": "U",
+      "status": "visited",
+      "children": []
+    },
+    "52": {
+      "id": 52,
+      "state": 123976854,
+      "parentId": 49,
+      "depth": 6,
+      "move": "L",
+      "status": "visited",
+      "children": []
+    },
+    "53": {
+      "id": 53,
+      "state": 123769854,
+      "parentId": 49,
+      "depth": 6,
+      "move": "R",
+      "status": "visited",
+      "children": []
+    },
+    "54": {
+      "id": 54,
+      "state": 123956784,
+      "parentId": 50,
+      "depth": 6,
+      "move": "U",
+      "status": "visited",
+      "children": []
+    },
+    "55": {
+      "id": 55,
+      "state": 123945786,
+      "parentId": 2,
+      "depth": 2,
+      "move": "U",
+      "status": "visited",
+      "children": [
+        56,
+        57
+      ]
+    },
+    "56": {
+      "id": 56,
+      "state": 923145786,
+      "parentId": 55,
+      "depth": 3,
+      "move": "U",
+      "status": "visited",
+      "children": [
+        58
+      ]
+    },
+    "57": {
+      "id": 57,
+      "state": 123495786,
+      "parentId": 55,
+      "depth": 3,
+      "move": "R",
+      "status": "visited",
+      "children": [
+        65,
+        66,
+        67
+      ]
+    },
+    "58": {
+      "id": 58,
+      "state": 293145786,
+      "parentId": 56,
+      "depth": 4,
+      "move": "R",
+      "status": "visited",
+      "children": [
+        59,
+        60
+      ]
+    },
+    "59": {
+      "id": 59,
+      "state": 243195786,
+      "parentId": 58,
+      "depth": 5,
+      "move": "D",
+      "status": "visited",
+      "children": [
+        61,
+        62,
+        63
+      ]
+    },
+    "60": {
+      "id": 60,
+      "state": 239145786,
+      "parentId": 58,
+      "depth": 5,
+      "move": "R",
+      "status": "visited",
+      "children": [
+        64
+      ]
+    },
+    "61": {
+      "id": 61,
+      "state": 243185796,
+      "parentId": 59,
+      "depth": 6,
+      "move": "D",
+      "status": "visited",
+      "children": []
+    },
+    "62": {
+      "id": 62,
+      "state": 243915786,
+      "parentId": 59,
+      "depth": 6,
+      "move": "L",
+      "status": "visited",
+      "children": []
+    },
+    "63": {
+      "id": 63,
+      "state": 243159786,
+      "parentId": 59,
+      "depth": 6,
+      "move": "R",
+      "status": "visited",
+      "children": []
+    },
+    "64": {
+      "id": 64,
+      "state": 235149786,
+      "parentId": 60,
+      "depth": 6,
+      "move": "D",
+      "status": "visited",
+      "children": []
+    },
+    "65": {
+      "id": 65,
+      "state": 193425786,
+      "parentId": 57,
+      "depth": 4,
+      "move": "U",
+      "status": "visited",
+      "children": [
+        68,
+        69
+      ]
+    },
+    "66": {
+      "id": 66,
+      "state": 123485796,
+      "parentId": 57,
+      "depth": 4,
+      "move": "D",
+      "status": "visited",
+      "children": [
+        72,
+        73
+      ]
+    },
+    "67": {
+      "id": 67,
+      "state": 123459786,
+      "parentId": 57,
+      "depth": 4,
+      "move": "R",
+      "status": "visited",
+      "children": [
+        75,
+        76
+      ]
+    },
+    "68": {
+      "id": 68,
+      "state": 913425786,
+      "parentId": 65,
+      "depth": 5,
+      "move": "L",
+      "status": "visited",
+      "children": [
+        70
+      ]
+    },
+    "69": {
+      "id": 69,
+      "state": 139425786,
+      "parentId": 65,
+      "depth": 5,
+      "move": "R",
+      "status": "visited",
+      "children": [
+        71
+      ]
+    },
+    "70": {
+      "id": 70,
+      "state": 413925786,
+      "parentId": 68,
+      "depth": 6,
+      "move": "D",
+      "status": "visited",
+      "children": []
+    },
+    "71": {
+      "id": 71,
+      "state": 135429786,
+      "parentId": 69,
+      "depth": 6,
+      "move": "D",
+      "status": "visited",
+      "children": []
+    },
+    "72": {
+      "id": 72,
+      "state": 123485976,
+      "parentId": 66,
+      "depth": 5,
+      "move": "L",
+      "status": "visited",
+      "children": []
+    },
+    "73": {
+      "id": 73,
+      "state": 123485769,
+      "parentId": 66,
+      "depth": 5,
+      "move": "R",
+      "status": "visited",
+      "children": [
+        74
+      ]
+    },
+    "74": {
+      "id": 74,
+      "state": 123489765,
+      "parentId": 73,
+      "depth": 6,
+      "move": "U",
+      "status": "visited",
+      "children": []
+    },
+    "75": {
+      "id": 75,
+      "state": 129453786,
+      "parentId": 67,
+      "depth": 5,
+      "move": "U",
+      "status": "visited",
+      "children": [
+        77
+      ]
+    },
+    "76": {
+      "id": 76,
+      "state": 123456789,
+      "parentId": 67,
+      "depth": 5,
+      "move": "D",
+      "status": "goal",
+      "children": []
+    },
+    "77": {
+      "id": 77,
+      "state": 192453786,
+      "parentId": 75,
+      "depth": 6,
+      "move": "L",
+      "status": "visited",
+      "children": []
+    }
+  },
+  "stack": [
+    3
+  ],
+  "visited": [
+    123745896,
+    123795846,
+    193725846,
+    913725846,
+    713925846,
+    713825946,
+    713825496,
+    713295846,
+    793215846,
+    713245896,
+    713259846,
+    139725846,
+    135729846,
+    135726849,
+    135726894,
+    135792846,
+    195732846,
+    135742896,
+    135972846,
+    123975846,
+    923175846,
+    293175846,
+    273195846,
+    273145896,
+    273915846,
+    273159846,
+    239175846,
+    235179846,
+    123875946,
+    123875496,
+    123895476,
+    193825476,
+    123985476,
+    123859476,
+    123875469,
+    123879465,
+    123759846,
+    129753846,
+    192753846,
+    152793846,
+    152743896,
+    152973846,
+    152739846,
+    912753846,
+    712953846,
+    123756849,
+    123756894,
+    123796854,
+    193726854,
+    123976854,
+    123769854,
+    123756984,
+    123956784,
+    123745986,
+    123945786,
+    923145786,
+    293145786,
+    243195786,
+    243185796,
+    243915786,
+    243159786,
+    239145786,
+    235149786,
+    123495786,
+    193425786,
+    913425786,
+    413925786,
+    139425786,
+    135429786,
+    123485796,
+    123485976,
+    123485769,
+    123489765,
+    123459786,
+    129453786,
+    192453786,
+    123456789
+  ],
+  "currentId": 76,
+  "parentOfCurrentId": 67,
+  "metrics": {
+    "generated": 78,
+    "explored": 77,
+    "maxDepth": 6,
+    "elapsedMs": 0.18
+  },
+  "result": {
+    "outcome": "found",
+    "moves": 5,
+    "path": [
+      0,
+      2,
+      55,
+      57,
+      67,
+      76
+    ],
+    "metrics": {
+      "generated": 78,
+      "explored": 77,
+      "maxDepth": 6,
+      "elapsedMs": 0.18
+    }
+  },
+  "canUndo": true,
+  "canRedo": false
+}

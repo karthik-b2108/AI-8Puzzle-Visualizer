@@ -1,0 +1,276 @@
+{
+  "config": {
+    "start": 724596831,
+    "goal": 123456789,
+    "depthLimit": 3
+  },
+  "nodes": {
+    "0": {
+      "id": 0,
+      "state": 724596831,
+      "parentId": null,
+      "depth": 0,
+      "move": null,
+      "status": "visited",
+      "children": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "1": {
+      "id": 1,
+      "state": 794526831,
+      "parentId": 0,
+      "depth": 1,
+      "move": "U",
+      "status": "visited",
+      "children": [
+        5,
+        6
+      ]
+    },
+    "2": {
+      "id": 2,
+      "state": 724536891,
+      "parentId": 0,
+      "depth": 1,
+      "move": "D",
+      "status": "visited",
+      "children": [
+        9,
+        10
+      ]
+    },
+    "3": {
+      "id": 3,
+      "state": 724956831,
+      "parentId": 0,
+      "depth": 1,
+      "move": "L",
+      "status": "visited",
+      "children": [
+        13,
+        14
+      ]
+    },
+    "4": {
+      "id": 4,
+      "state": 724569831,
+      "parentId": 0,
+      "depth": 1,
+      "move": "R",
+      "status": "visited",
+      "children": [
+        17,
+        18
+      ]
+    },
+    "5": {
+      "id": 5,
+      "state": 974526831,
+      "parentId": 1,
+      "depth": 2,
+      "move": "L",
+      "status": "visited",
+      "children": [
+        7
+      ]
+    },
+    "6": {
+      "id": 6,
+      "state": 749526831,
+      "parentId": 1,
+      "depth": 2,
+      "move": "R",
+      "status": "visited",
+      "children": [
+        8
+      ]
+    },
+    "7": {
+      "id": 7,
+      "state": 574926831,
+      "parentId": 5,
+      "depth": 3,
+      "move": "D",
+      "status": "visited",
+      "children": []
+    },
+    "8": {
+      "id": 8,
+      "state": 746529831,
+      "parentId": 6,
+      "depth": 3,
+      "move": "D",
+      "status": "visited",
+      "children": []
+    },
+    "9": {
+      "id": 9,
+      "state": 724536981,
+      "parentId": 2,
+      "depth": 2,
+      "move": "L",
+      "status": "visited",
+      "children": [
+        11
+      ]
+    },
+    "10": {
+      "id": 10,
+      "state": 724536819,
+      "parentId": 2,
+      "depth": 2,
+      "move": "R",
+      "status": "visited",
+      "children": [
+        12
+      ]
+    },
+    "11": {
+      "id": 11,
+      "state": 724936581,
+      "parentId": 9,
+      "depth": 3,
+      "move": "U",
+      "status": "visited",
+      "children": []
+    },
+    "12": {
+      "id": 12,
+      "state": 724539816,
+      "parentId": 10,
+      "depth": 3,
+      "move": "U",
+      "status": "visited",
+      "children": []
+    },
+    "13": {
+      "id": 13,
+      "state": 924756831,
+      "parentId": 3,
+      "depth": 2,
+      "move": "U",
+      "status": "visited",
+      "children": [
+        15
+      ]
+    },
+    "14": {
+      "id": 14,
+      "state": 724856931,
+      "parentId": 3,
+      "depth": 2,
+      "move": "D",
+      "status": "visited",
+      "children": [
+        16
+      ]
+    },
+    "15": {
+      "id": 15,
+      "state": 294756831,
+      "parentId": 13,
+      "depth": 3,
+      "move": "R",
+      "status": "visited",
+      "children": []
+    },
+    "16": {
+      "id": 16,
+      "state": 724856391,
+      "parentId": 14,
+      "depth": 3,
+      "move": "R",
+      "status": "visited",
+      "children": []
+    },
+    "17": {
+      "id": 17,
+      "state": 729564831,
+      "parentId": 4,
+      "depth": 2,
+      "move": "U",
+      "status": "visited",
+      "children": [
+        19
+      ]
+    },
+    "18": {
+      "id": 18,
+      "state": 724561839,
+      "parentId": 4,
+      "depth": 2,
+      "move": "D",
+      "status": "visited",
+      "children": [
+        20
+      ]
+    },
+    "19": {
+      "id": 19,
+      "state": 792564831,
+      "parentId": 17,
+      "depth": 3,
+      "move": "L",
+      "status": "visited",
+      "children": []
+    },
+    "20": {
+      "id": 20,
+      "state": 724561893,
+      "parentId": 18,
+      "depth": 3,
+      "move": "L",
+      "status": "visited",
+      "children": []
+    }
+  },
+  "stack": [],
+  "visited": [
+    724596831,
+    794526831,
+    974526831,
+    574926831,
+    749526831,
+    746529831,
+    724536891,
+    724536981,
+    724936581,
+    724536819,
+    724539816,
+    724956831,
+    924756831,
+    294756831,
+    724856931,
+    724856391,
+    724569831,
+    729564831,
+    792564831,
+    724561839,
+    724561893
+  ],
+  "currentId": 20,
+  "parentOfCurrentId": 18,
+  "metrics": {
+    "generated": 21,
+    "explored": 21,
+    "maxDepth": 3,
+    "elapsedMs": 0.044
+  },
+  "result": {
+    "outcome": "not_found",
+    "moves": null,
+    "path": null,
+    "metrics": {
+      "generated": 21,
+      "explored": 21,
+      "maxDepth": 3,
+      "elapsedMs": 0.044
+    }
+  },
+  "canUndo": true,
+  "canRedo": false
+}

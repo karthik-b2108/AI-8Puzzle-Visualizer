@@ -1,25 +1,27 @@
-import { NavLink } from 'react-router-dom'
-import { GitBranch } from 'lucide-react'
-import styles from './AppHeader.module.css'
+import { useLocation } from 'react-router-dom'
+import Header from './Header'
+import { useSearchStore } from '../../store/useSearchStore'
+import { useSettingsStore } from '../../store/useSettingsStore'
 
-/** Integration shell header. The presentational header lives in ./Header.tsx. */
+/** Connects the presentational header to the live search and UI settings. */
 export default function AppHeader() {
+  const { pathname } = useLocation()
+  const elapsedMs = useSearchStore((state) => state.snapshot.metrics.elapsedMs)
+  const running = useSearchStore((state) => state.autoplay.running)
+  const theme = useSettingsStore((state) => state.theme)
+  const setTheme = useSettingsStore((state) => state.setTheme)
+  const sidebarOpen = useSettingsStore((state) => state.sidebarOpen)
+  const toggleSidebar = useSettingsStore((state) => state.toggleSidebar)
+
   return (
-    <header className={styles.header}>
-      <NavLink to="/" className={styles.brand} aria-label="DFS 8-Puzzle Visualizer home">
-        <span className={styles.mark} aria-hidden="true">
-          <GitBranch size={16} strokeWidth={2.4} />
-        </span>
-        <span className={styles.title}>DFS 8-Puzzle</span>
-      </NavLink>
-      <nav className={styles.nav} aria-label="Main">
-        <NavLink to="/" end className={({ isActive }) => (isActive ? styles.linkActive : styles.link)}>
-          Visualizer
-        </NavLink>
-        <NavLink to="/learn" className={({ isActive }) => (isActive ? styles.linkActive : styles.link)}>
-          Learn
-        </NavLink>
-      </nav>
-    </header>
+    <Header
+      elapsedMs={elapsedMs}
+      running={running}
+      theme={theme}
+      onThemeChange={setTheme}
+      sidebarOpen={sidebarOpen}
+      onToggleSidebar={toggleSidebar}
+      showSidebarToggle={pathname === '/'}
+    />
   )
 }

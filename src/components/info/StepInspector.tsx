@@ -82,7 +82,7 @@ export default function StepInspector({ snapshot, narration }: StepInspectorProp
             <div className={styles.parentRow}>
               <span className={styles.parentLabel}>
                 Parent
-                <span className={styles.parentState mono}>{formatState(parent.state)}</span>
+                <span className={`${styles.parentState} mono`}>{formatState(parent.state)}</span>
                 <span className={styles.parentMove} title={moveName(current.move)}>
                   {moveArrow(current.move)} {moveName(current.move)}
                 </span>
@@ -93,7 +93,7 @@ export default function StepInspector({ snapshot, narration }: StepInspectorProp
             <p className={styles.rootNote}>This node is the root of the search tree.</p>
           )}
 
-          <p className={styles.narration} aria-live="polite">
+          <p className={styles.narration} aria-live="polite" aria-atomic="true">
             {describe(narration, stateOf)}
           </p>
         </div>

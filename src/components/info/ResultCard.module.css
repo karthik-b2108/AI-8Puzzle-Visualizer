@@ -16,6 +16,10 @@
   border-left-color: var(--warning);
 }
 
+.card[data-reduced-motion='true'] {
+  animation: none;
+}
+
 @keyframes slide-in {
   from {
     opacity: 0;

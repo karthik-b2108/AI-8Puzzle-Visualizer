@@ -14,7 +14,7 @@ const REACHABLE_STATES = 181_440
 
 export default function LearnPage() {
   return (
-    <main className={styles.page}>
+    <main id="main-content" tabIndex={-1} className={styles.page}>
       <header className={styles.hero}>
         <div className={styles.heroContent}>
           <p className={styles.eyebrow}>Learn · Depth-first search</p>
@@ -316,16 +316,28 @@ export default function LearnPage() {
               in practice is a limit hit.
             </p>
             <p>
-              The limit is enough for solutions of <code>m</code> moves or fewer. It is not enough in
-              general: from the standard goal, the hardest 8-puzzle states are 31 moves away. The app
-              caps the limit at 30, so those deepest states cannot be solved with any setting. Lower
-              limits are useful for watching the mechanics, not for solving arbitrary puzzles.
+              Running out of stack does not prove the puzzle is unsolvable: it proves this bounded
+              traversal did not reach the goal. The visited set adds a second, subtler effect. A
+              state is marked visited the first time it is popped, even if that happens on a long
+              detour. If the same state later appears on a shorter path, it is pruned as a
+              duplicate, so its shallower children are never generated. On the default board the
+              5-move solution is found with a limit of 6, yet a limit of 13 can exhaust the bounded
+              tree without generating the goal at all. The limit is a hard ceiling on expansion
+              depth, not a guarantee that every solution inside the ceiling will be discovered by
+              this particular traversal order.
+            </p>
+            <p>
+              The cap also matters for the puzzle as a whole: from the standard goal, the hardest
+              8-puzzle states are 31 moves away, and the app caps the limit at 30. Those deepest
+              states cannot be solved with any setting. Lower limits are useful for watching the
+              mechanics, not for solving arbitrary puzzles.
             </p>
 
             <Callout title="Bounded completeness" tone="note">
               <p>
-                With a limit of N, DFS is complete for solutions of N moves or fewer. It is not
-                complete for the puzzle as a whole, and it never becomes optimal.
+                A depth limit makes DFS incomplete for the puzzle as a whole, and graph-search
+                pruning can also hide a shallow solution behind a longer first visit. Unlimited DFS
+                with cycle pruning is complete on this finite graph; a bounded run is not.
               </p>
             </Callout>
           </Section>

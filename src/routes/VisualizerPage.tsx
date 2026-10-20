@@ -154,7 +154,7 @@ export default function VisualizerPage() {
   })
 
   return (
-    <main className={styles.page}>
+    <main id="main-content" tabIndex={-1} className={styles.page}>
       <section className={styles.top} aria-label="Setup and current step">
         <StartGoalPanel
           start={start}

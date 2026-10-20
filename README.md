@@ -33,12 +33,13 @@ npm run lint
 - **Edit both boards.** Click one tile, then another, to swap them. The blank (9) is a tile too;
   `Esc` cancels a selection. The goal board is fully editable.
 - **Start a search.** Board edits are staged — press **Start search** to configure and reset the
-  engine. Unsovable start/goal pairs are blocked with an inline explanation.
+  engine. Unsolvable start/goal pairs are blocked with an inline explanation.
 - **Step, undo, redo, reset, auto-play and run to end.** Every action produces a new immutable
   snapshot; undo restores the previous snapshot exactly and redo replays the step.
-- **Watch the tree.** New children animate in, the camera follows the current node, and the
-  solution path glows. Deep finished subtrees collapse automatically when the tree grows large;
-  the `+N` badge on a collapsed node expands one level (double-click expands the subtree).
+- **Watch the tree.** New children animate in, the camera follows the current node, backtracking
+  pulses up the edges, undo fades removed nodes out, and the solution path glows in sequence. Deep
+  finished subtrees collapse automatically when the tree grows large; the `+N` badge on a collapsed
+  node expands one level (double-click expands the subtree).
 - **Inspect the search.** The step inspector shows the current node, its depth, its parent, the move
   that produced it, and a one-line narration of what the engine just did.
 - **Browse the frontier and explored set.** The sidebar is virtualized, searchable by digits, and
@@ -78,7 +79,10 @@ and every node keeps a parent id so the path and the tree can be reconstructed.
   added to the visited set and, if it is not the goal, its children are generated (skipping the
   parent state and already-visited states) up to the depth limit.
 - DFS is **not optimal**: the first goal popped may not be on the shortest path. It is complete on
-  the finite 8-puzzle graph with cycle pruning, but a depth limit makes it incomplete.
+  the finite 8-puzzle graph with cycle pruning, but a depth limit makes it incomplete. A bounded
+  run can also miss a shallow solution when a state was first visited on a longer path and the
+  shorter route is pruned as a duplicate; the Learn page's completeness section walks through this
+  on the default board.
 - Engine time is measured with `performance.now()` around each step; rendering time is excluded.
 
 ## Development notes
@@ -91,10 +95,9 @@ The app was built in phases with parallel git worktrees under `.worktrees/`:
 | `feat/ui-shell` | tokens, header, controls, boards |
 | `feat/tree` | React Flow canvas, layout, collapsing |
 | `feat/learn` | Learn page |
-| `feat/integration` | stores, pages, end-to-end wiring |
-| `feat/motion-sidebar` | animations + sidebar |
-| `feat/results` | inspector, result card, replay |
-| `feat/polish` | hardening, README, release |
+| `feat/integration` | stores, pages, step inspector, result card, replay, end-to-end wiring |
+| `feat/motion-sidebar` | collapsible virtualized sidebar |
+| `feat/polish` | hardening, accessibility, README, release |
 
 `npm run fixtures` regenerates the committed snapshot fixtures in `src/contract/fixtures/` with a
 standalone script.

@@ -4,13 +4,14 @@ import { formatDuration, formatNumber } from '../../utils/format'
 import StatBadge from './StatBadge'
 import styles from './ResultCard.module.css'
 
-export default function ResultCard({ result, config, replaying, onReplay }: ResultCardProps) {
+export default function ResultCard({ result, config, replaying, onReplay, reducedMotion }: ResultCardProps) {
   if (!result) return null
   const found = result.outcome === 'found'
 
   return (
     <section
       className={`${styles.card} ${found ? styles.found : styles.missed}`}
+      data-reduced-motion={reducedMotion || undefined}
       aria-label={found ? 'Search result: goal reached' : 'Search result: not found'}
     >
       <header className={styles.header}>
@@ -19,7 +20,7 @@ export default function ResultCard({ result, config, replaying, onReplay }: Resu
         </span>
         <div className={styles.heading}>
           <h2 className={styles.title}>{found ? 'Goal reached' : 'Not found'}</h2>
-          <p className={styles.subtitle}>
+          <p className={styles.subtitle} role="status">
             {found
               ? `Solution in ${result.moves} ${result.moves === 1 ? 'move' : 'moves'}.`
               : `Not found within depth limit ${config.depthLimit}.`}

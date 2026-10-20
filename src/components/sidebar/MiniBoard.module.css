@@ -1,0 +1,45 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  flex: none;
+  padding: 2px;
+  background: var(--surface-3);
+  border-radius: var(--radius-xs);
+}
+
+.sm {
+  width: 40px;
+  height: 40px;
+}
+
+.xs {
+  width: 30px;
+  height: 30px;
+}
+
+.cell,
+.blank {
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  line-height: 1;
+  border-radius: 2px;
+}
+
+.cell {
+  color: var(--text);
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--border-subtle);
+}
+
+.blank {
+  background: color-mix(in srgb, var(--surface-3) 60%, transparent);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+.xs .cell,
+.xs .blank {
+  font-size: 6px;
+}

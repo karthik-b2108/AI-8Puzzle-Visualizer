@@ -1,0 +1,96 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: 6px var(--space-3);
+  text-align: left;
+  background: transparent;
+  border-bottom: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.row:hover,
+.row[data-highlighted] {
+  background: var(--accent-soft);
+}
+
+.row:active {
+  transform: scale(0.995);
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+
+.state {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-subtle);
+  white-space: nowrap;
+}
+
+.status {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 9px;
+  font-weight: var(--weight-semibold);
+  padding: 1px 4px;
+  border-radius: var(--radius-xs);
+  color: var(--text-muted);
+  background: var(--surface-2);
+}
+
+.status[data-status='frontier'] {
+  color: var(--status-frontier);
+  background: var(--status-frontier-soft);
+}
+
+.status[data-status='visited'] {
+  color: var(--status-visited);
+  background: var(--status-visited-soft);
+}
+
+.status[data-status='duplicate'] {
+  color: var(--status-duplicate);
+  background: var(--status-duplicate-soft);
+}
+
+.status[data-status='goal'] {
+  color: var(--status-goal);
+  background: var(--status-goal-soft);
+}
+
+.next {
+  flex: none;
+  padding: 2px 6px;
+  font-size: 9px;
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent-contrast);
+  background: var(--accent);
+  border-radius: var(--radius-pill);
+}
+
+.id {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-subtle);
+  flex: none;
+}

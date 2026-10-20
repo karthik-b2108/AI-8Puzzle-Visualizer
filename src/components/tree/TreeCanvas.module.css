@@ -1,0 +1,90 @@
+.wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 480px;
+  overflow: hidden;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.flow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--surface-inset);
+}
+
+.panel {
+  z-index: 5;
+  margin: var(--space-2);
+}
+
+.controls {
+  margin: var(--space-2);
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.minimap {
+  margin: var(--space-2);
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: var(--text-sm);
+  color: var(--text-subtle);
+  pointer-events: none;
+}
+
+/* React Flow chrome, themed with tokens. */
+.wrap :global(.react-flow__controls-button) {
+  color: var(--text-muted);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.wrap :global(.react-flow__controls-button:hover) {
+  color: var(--text);
+  background: var(--surface-2);
+}
+
+.wrap :global(.react-flow__controls-button svg) {
+  fill: currentColor;
+}
+
+.wrap :global(.react-flow__minimap) {
+  background: var(--surface);
+}
+
+.wrap :global(.react-flow__minimap-mask) {
+  opacity: 0.24;
+}
+
+.wrap :global(.react-flow__attribution) {
+  padding: 1px 4px;
+  font-size: 9px;
+  color: var(--text-subtle);
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+}
+
+.wrap :global(.react-flow__node) {
+  font-family: var(--font-sans);
+}
+
+.wrap :global(.react-flow__edge-path) {
+  stroke-linecap: round;
+}

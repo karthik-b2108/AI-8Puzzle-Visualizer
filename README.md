@@ -28,7 +28,7 @@ Implemented Depth First Search, limited to a maximum depth of 30 for time and me
 
 ## GitHub URL
 
-[GitHub Pages URL](https://localhost:1234)
+[GitHub Pages URL](https://karthik-b2108.github.io/AI-8Puzzle-Visualizer/)
 
 ## Student Details
 

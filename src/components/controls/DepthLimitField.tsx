@@ -48,7 +48,7 @@ export default function DepthLimitField({
 
   return (
     <div className={styles.field}>
-      <label className={styles.label} htmlFor={inputId}>
+      <label className={styles.label} htmlFor={inputId} style={{marginLeft: '1.0rem'}}>
         Depth limit
       </label>
       <div className={styles.control} data-focused={String(focused)}>
@@ -77,7 +77,6 @@ export default function DepthLimitField({
           }}
         />
         <span id={suffixId} className={styles.suffix}>
-          plies
         </span>
       </div>
       <DepthWarning depthLimit={value} />

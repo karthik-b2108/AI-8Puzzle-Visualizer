@@ -1,4 +1,4 @@
-import { BaseEdge, getBezierPath } from '@xyflow/react'
+import { BaseEdge, getStraightPath } from '@xyflow/react'
 import type { EdgeProps } from '@xyflow/react'
 import type { TreeEdgeData } from '../../hooks/useTreeLayout'
 import { statusColor } from './status'
@@ -6,26 +6,21 @@ import styles from './AnimatedEdge.module.css'
 
 const ID_SAFE = /[^a-zA-Z0-9_-]/g
 
-/** Custom edge: status-coloured curve, arrow head, solution glow. */
+/** Custom edge: status-coloured straight line, arrow head, solution glow. */
 export function AnimatedEdge({
   id,
   sourceX,
   sourceY,
   targetX,
   targetY,
-  sourcePosition,
-  targetPosition,
   data,
   markerEnd,
 }: EdgeProps) {
-  const [path] = getBezierPath({
+  const [path] = getStraightPath({
     sourceX,
     sourceY,
     targetX,
     targetY,
-    sourcePosition,
-    targetPosition,
-    curvature: 0.32,
   })
 
   const edgeData = data as TreeEdgeData | undefined

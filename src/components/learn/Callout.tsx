@@ -12,7 +12,7 @@ interface CalloutProps {
 const TONE_LABEL: Record<CalloutTone, string> = {
   note: 'Note',
   insight: 'Key idea',
-  warning: 'Watch out',
+  warning: 'Caution',
 }
 
 /** A quiet aside for definitions, key ideas and pitfalls. */

@@ -9,7 +9,7 @@ export const NODE_WIDTH = 66
 export const NODE_HEIGHT = 66
 
 /** d3 tidy-tree spacing: horizontal between siblings, vertical between depths. */
-const NODE_SIZE: [number, number] = [100, 96]
+const NODE_SIZE: [number, number] = [80, 126]
 
 export interface StateNodeData extends Record<string, unknown> {
   node: SearchNode

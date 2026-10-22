@@ -54,8 +54,9 @@ export function useLearnMotion(rootRef: RefObject<HTMLElement>) {
       const bodies = gsap.utils.toArray<HTMLElement>('[data-motion="body"]', root)
       for (const body of bodies) {
         gsap.from(body, {
+          y: 10,
           opacity: 0,
-          duration: 0.8,
+          duration: 1.0,
           ease: 'power2.out',
           scrollTrigger: { trigger: body, start: 'top 92%', once: true },
         })

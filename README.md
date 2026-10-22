@@ -4,9 +4,38 @@ An interactive, animated visualization of **depth-first search** on the 8-puzzle
 search one node at a time, watch the full state-space tree grow, and compare the frontier with the
 explored set.
 
+## Technologies Used  
+
 Built with Vite, React 18, TypeScript, React Flow (`@xyflow/react`), Zustand and Framer Motion.
 
-## Run it
+## Search Algorithm
+
+Implemented Depth First Search, limited to a maximum depth of 30 for time and memory constraints (DOM nodes)
+
+## Screenshots
+
+- Home page
+
+![Home Page](docs/screenshots/Home.png)
+
+- Visualizer Page
+
+![Visualizer Page](docs/screenshots/Visualizer.png)
+
+- Learning Page
+
+![Learning Page](docs/screenshots/Learn.png)
+
+## GitHub URL
+
+[GitHub Pages URL](https://localhost:1234)
+
+## Student Details
+
+- Name : Karthik B
+- Registration Number: 24BCE2592
+
+## How to Run
 
 ```bash
 npm install
@@ -18,14 +47,6 @@ Production build and preview:
 ```bash
 npm run build
 npm run preview
-```
-
-Tests and type checking:
-
-```bash
-npm test           # vitest run
-npm run typecheck
-npm run lint
 ```
 
 ## What you can do
@@ -68,39 +89,3 @@ The engine is deliberately framework-free. A search is a mutable controller that
 `SearchSnapshot` after each action; the store simply publishes that snapshot to React. The stack is
 an array (top = last element), the visited set is a `Set` mirrored as an ordered array in snapshots,
 and every node keeps a parent id so the path and the tree can be reconstructed.
-
-## Search semantics
-
-- A board is a 9-digit integer; digit `y` is the tile on square `y`, and `9` is the blank.
-- Neighbours are generated in **U, D, L, R** order and pushed in reverse so the first neighbour is
-  popped first.
-- A popped state that has already been visited is marked `duplicate` and pruned. Otherwise it is
-  added to the visited set and, if it is not the goal, its children are generated (skipping the
-  parent state and already-visited states) up to the depth limit.
-- DFS is **not optimal**: the first goal popped may not be on the shortest path. It is complete on
-  the finite 8-puzzle graph with cycle pruning, but a depth limit makes it incomplete. A bounded
-  run can also miss a shallow solution when a state was first visited on a longer path and the
-  shorter route is pruned as a duplicate; the Learn page's completeness section walks through this
-  on the default board.
-- Engine time is measured with `performance.now()` around each step; rendering time is excluded.
-
-## Development notes
-
-The app was built in phases with parallel git worktrees under `.worktrees/`:
-
-| Branch | Scope |
-|---|---|
-| `feat/engine` | DFS engine + unit tests |
-| `feat/ui-shell` | tokens, header, controls, boards |
-| `feat/tree` | React Flow canvas, layout, collapsing |
-| `feat/learn` | Learn page |
-| `feat/integration` | stores, pages, step inspector, result card, replay, end-to-end wiring |
-| `feat/motion-sidebar` | collapsible virtualized sidebar |
-| `feat/polish` | hardening, accessibility, README, release |
-
-`npm run fixtures` regenerates the committed snapshot fixtures in `src/contract/fixtures/` with a
-standalone script.
-
-## License
-
-MIT.

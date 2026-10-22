@@ -477,7 +477,7 @@ export default function LearnPage() {
             </p>
           </Section>
 
-          <footer className={styles.footer}>
+          <footer className={styles.footer} style={{width:'780px'}}>
             <div>
               <p className={styles.footerTitle}>See it in motion</p>
               <p className={styles.footerText}>

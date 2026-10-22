@@ -23,7 +23,7 @@ export default function SpeedSlider({ speed, onChange }: SpeedSliderProps) {
   const style = { '--speed-progress': `${percent}%` } as CSSProperties
 
   return (
-    <div className={styles.slider}>
+    <div className={styles.slider} style={{marginTop: '0.25rem', marginRight: '1.0rem'  }}>
       <div className={styles.head}>
         <label className={styles.label} htmlFor={inputId}>
           Speed
@@ -44,22 +44,6 @@ export default function SpeedSlider({ speed, onChange }: SpeedSliderProps) {
         aria-valuetext={`${formatSpeed(speed)} playback speed`}
         onChange={(event) => onChange(Number(event.target.value))}
       />
-      <div className={styles.presets} role="group" aria-label="Speed presets">
-        {SPEED_PRESETS.map((preset) => {
-          const active = Math.abs(preset - speed) < 0.001
-          return (
-            <button
-              key={preset}
-              type="button"
-              className={styles.preset}
-              aria-pressed={active}
-              onClick={() => onChange(preset)}
-            >
-              {formatSpeed(preset)}
-            </button>
-          )
-        })}
-      </div>
     </div>
   )
 }

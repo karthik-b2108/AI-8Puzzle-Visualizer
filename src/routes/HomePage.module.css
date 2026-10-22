@@ -4,13 +4,13 @@
   min-height: calc(100vh - var(--header-h));
   align-items: center;
   justify-content: center;
-  overflow: hidden;
   padding: var(--space-10) var(--space-5);
+  overflow:hidden;  
 }
 
 .page::before {
   position: absolute;
-  top: -30%;
+  top: 50%;
   left: 50%;
   width: min(960px, 120vw);
   height: min(960px, 120vw);
@@ -20,7 +20,6 @@
     radial-gradient(circle at 70% 60%, var(--status-goal-soft) 0%, transparent 42%);
   opacity: 0.85;
   pointer-events: none;
-  transform: translateX(-50%);
 }
 
 .hero {

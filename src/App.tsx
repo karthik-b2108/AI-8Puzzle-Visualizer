@@ -30,12 +30,14 @@ function App() {
         Skip to main content
       </a>
       <AppHeader />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/visualizer" element={<VisualizerPage />} />
-        <Route path="/learn" element={<LearnPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <div key={key} className="route-transition">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/visualizer" element={<VisualizerPage />} />
+          <Route path="/learn" element={<LearnPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
     </div>
   )
 }

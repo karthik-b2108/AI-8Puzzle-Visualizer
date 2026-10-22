@@ -3,7 +3,7 @@ import type { SidebarShellProps } from '../../contract/ui'
 import SidebarTabs from './SidebarTabs'
 import styles from './SidebarShell.module.css'
 
-/** Collapsible, animated sidebar with the virtualized Frontier / Explored lists. */
+/** Floating, collapsible search-list deck layered over the tree canvas. */
 export default function SidebarShell({ open, onToggle, snapshot }: SidebarShellProps) {
   return (
     <aside className={styles.shell} data-open={open} aria-label="Search lists">
@@ -23,10 +23,10 @@ export default function SidebarShell({ open, onToggle, snapshot }: SidebarShellP
           type="button"
           className={styles.toggle}
           onClick={onToggle}
-          aria-label={open ? 'Collapse sidebar' : 'Expand sidebar'}
+          aria-label={open ? 'Collapse search list' : 'Expand search list'}
           aria-expanded={open}
           aria-controls="search-lists-panel"
-          title={`${open ? 'Collapse' : 'Expand'} sidebar ( [ )`}
+          title={`${open ? 'Collapse' : 'Expand'} search list ( [ )`}
         >
           {open ? <PanelLeftClose size={17} /> : <PanelLeftOpen size={17} />}
         </button>

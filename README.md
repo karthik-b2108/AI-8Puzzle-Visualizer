@@ -1,8 +1,8 @@
 # DFS 8-Puzzle Visualizer
 
 An interactive, animated visualization of **depth-first search** on the 8-puzzle. Step through the
-search one node at a time, watch the state-space tree grow, collapse deep subtrees on demand, and
-compare the frontier with the explored set.
+search one node at a time, watch the full state-space tree grow, and compare the frontier with the
+explored set.
 
 Built with Vite, React 18, TypeScript, React Flow (`@xyflow/react`), Zustand and Framer Motion.
 
@@ -36,20 +36,19 @@ npm run lint
   engine. Unsolvable start/goal pairs are blocked with an inline explanation.
 - **Step, undo, redo, reset, auto-play and run to end.** Every action produces a new immutable
   snapshot; undo restores the previous snapshot exactly and redo replays the step.
-- **Watch the tree.** New children animate in, the camera follows the current node, backtracking
-  pulses up the edges, undo fades removed nodes out, and the solution path glows in sequence. Deep
-  finished subtrees collapse automatically when the tree grows large; the `+N` badge on a collapsed
-  node expands one level (double-click expands the subtree).
-- **Inspect the search.** The step inspector shows the current node, its depth, its parent, the move
-  that produced it, and a one-line narration of what the engine just did.
-- **Browse the frontier and explored set.** The sidebar is virtualized, searchable by digits, and
-  linked to the tree (hover highlights, click pans).
+- **Watch the tree.** New children animate in, backtracking pulses up the edges, undo fades removed
+  nodes out, and the solution path glows in sequence. Every generated node stays visible until it is
+  removed; the status bar on each square node matches the legend colour.
+- **Inspect the search.** The step inspector shows the current board, node id, depth, and a one-line
+  narration of what the engine just did.
+- **Browse the frontier and explored set.** The floating search-list deck is virtualized, searchable
+  by node id, and linked to the tree (hover highlights, click pans).
 - **Replay a solution.** The result card reports moves, generated/explored nodes, maximum depth and
   execution time, and can animate the solution on a board.
 - **Learn the algorithm.** The Learn page explains the principle, optimality, completeness,
   complexity and trade-offs, with pseudocode and diagrams.
 
-Keyboard shortcuts: `Space` step, `←` undo, `→` redo, `A` auto-play, `R` reset, `[` toggle sidebar.
+Keyboard shortcuts: `Space` step, `←` undo, `→` redo, `A` auto-play, `R` reset, `[` toggle the search-list deck.
 
 ## Project layout
 
@@ -60,7 +59,7 @@ src/
 ├─ store/           Zustand stores: search, settings, tree view
 ├─ components/      layout · controls · board · tree · info · sidebar · learn
 ├─ hooks/           autoplay/hotkeys/layout/camera/replay/reduced-motion
-├─ routes/          VisualizerPage, LearnPage
+├─ routes/          HomePage, VisualizerPage, LearnPage
 ├─ styles/          tokens.css + global.css (+ CSS modules)
 └─ utils/           formatting and direction helpers
 ```

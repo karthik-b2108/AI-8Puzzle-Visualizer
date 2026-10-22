@@ -1,10 +1,17 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Link, MemoryRouter } from 'react-router-dom'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 
 vi.mock('./components/layout/AppHeader', () => ({ default: () => <header /> }))
+vi.mock('./routes/HomePage', () => ({
+  default: () => (
+    <main id="main-content" tabIndex={-1}>
+      Home page
+    </main>
+  ),
+}))
 vi.mock('./routes/LearnPage', () => ({
   default: () => (
     <main id="main-content" tabIndex={-1}>
@@ -19,6 +26,14 @@ vi.mock('./routes/VisualizerPage', () => ({
     </main>
   ),
 }))
+
+beforeEach(() => {
+  vi.stubGlobal('scrollTo', vi.fn())
+})
+
+afterEach(() => {
+  vi.unstubAllGlobals()
+})
 
 describe('App', () => {
   it('renders a skip link to the main landmark', () => {

@@ -1,35 +1,28 @@
-import { useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 import { hierarchy, tree } from 'd3-hierarchy'
 import type { Edge, Node } from '@xyflow/react'
 import type { Move, SearchNode, SearchSnapshot, Status } from '../contract/types'
-import type { HiddenCounts, VisibilityResult } from '../components/tree/collapse'
 import { useTreeViewStore } from '../store/useTreeViewStore'
 
 /** Rendered node box. Must match StateNode.module.css. */
-export const NODE_WIDTH = 156
+export const NODE_WIDTH = 66
 export const NODE_HEIGHT = 66
 
 /** d3 tidy-tree spacing: horizontal between siblings, vertical between depths. */
-const NODE_SIZE: [number, number] = [180, 96]
+const NODE_SIZE: [number, number] = [100, 96]
 
 export interface StateNodeData extends Record<string, unknown> {
   node: SearchNode
-  /** Present only when this node is collapsed and hides descendants. */
-  hidden?: HiddenCounts
   isCurrent: boolean
   isHovered: boolean
   isSelected: boolean
   isOnSolutionPath: boolean
   /** Zero-based position along the solution path, or null when not on it. */
   solutionIndex?: number | null
-  isGoal: boolean
-  isCollapsed: boolean
   depth: number
   /** Offset from the parent's layout position; used for the enter animation. */
   enterFrom?: { x: number; y: number }
   reducedMotion?: boolean
-  onExpandOne: (id: number) => void
-  onExpandSubtree: (id: number) => void
 }
 
 export interface TreeEdgeData extends Record<string, unknown> {
@@ -60,27 +53,20 @@ interface BaseLayout {
 
 const emptyBase: BaseLayout = { nodes: [], edges: [], version: '0:0:0' }
 
-function buildBaseLayout(
-  snapshot: SearchSnapshot,
-  visibility: VisibilityResult,
-  reducedMotion: boolean,
-  onExpandOne: (id: number) => void,
-  onExpandSubtree: (id: number) => void,
-): BaseLayout {
+function buildBaseLayout(snapshot: SearchSnapshot, reducedMotion: boolean): BaseLayout {
   const rootNode = snapshot.nodes[0]
-  if (!rootNode || visibility.visible.size === 0) return emptyBase
+  if (!rootNode) return emptyBase
 
-  const visibleChildren = (node: SearchNode): SearchNode[] => {
+  const childrenOf = (node: SearchNode): SearchNode[] => {
     const children: SearchNode[] = []
     for (const childId of node.children) {
-      if (!visibility.visible.has(childId)) continue
       const child = snapshot.nodes[childId]
       if (child) children.push(child)
     }
     return children
   }
 
-  const hierarchyRoot = hierarchy<SearchNode>(rootNode, visibleChildren)
+  const hierarchyRoot = hierarchy<SearchNode>(rootNode, childrenOf)
   const layoutRoot = tree<SearchNode>().nodeSize(NODE_SIZE)(hierarchyRoot)
 
   const solutionPath = snapshot.result?.path ?? null
@@ -116,21 +102,16 @@ function buildBaseLayout(
       connectable: false,
       data: {
         node,
-        hidden: visibility.hidden.get(node.id),
         isCurrent: snapshot.currentId === node.id,
         isHovered: false,
         isSelected: false,
         isOnSolutionPath: solutionNodes.has(node.id),
         solutionIndex: solutionNodeIndex.get(node.id) ?? null,
-        isGoal: node.status === 'goal',
-        isCollapsed: visibility.collapsed.has(node.id),
         depth: node.depth,
         enterFrom: parentPoint
           ? { x: parentPoint.x - point.x, y: parentPoint.y - point.y }
           : { x: 0, y: -12 },
         reducedMotion,
-        onExpandOne,
-        onExpandSubtree,
       },
     }
   })
@@ -138,7 +119,7 @@ function buildBaseLayout(
   const edges: Edge<TreeEdgeData>[] = []
   for (const node of Object.values(snapshot.nodes)) {
     if (node.parentId === null || node.parentId === undefined) continue
-    if (!visibility.visible.has(node.id) || !visibility.visible.has(node.parentId)) continue
+    if (!snapshot.nodes[node.parentId]) continue
     const key = `${node.parentId}:${node.id}`
     edges.push({
       id: `e-${node.parentId}-${node.id}`,
@@ -158,44 +139,18 @@ function buildBaseLayout(
   return {
     nodes,
     edges,
-    version: `${visibility.visible.size}:${visibility.collapsed.size}:${snapshot.currentId ?? 'none'}:${
+    version: `${Object.keys(snapshot.nodes).length}:${snapshot.currentId ?? 'none'}:${
       solutionPath?.length ?? 0
     }`,
   }
 }
 
-/**
- * Lay out only the currently visible nodes with d3's tidy tree. A collapsed
- * node is naturally a leaf because none of its children are visible.
- */
-export function useTreeLayout(
-  snapshot: SearchSnapshot,
-  visibility: VisibilityResult,
-  reducedMotion = false,
-): TreeLayout {
+/** Lay out every generated node with d3's tidy tree. */
+export function useTreeLayout(snapshot: SearchSnapshot, reducedMotion = false): TreeLayout {
   const hoveredId = useTreeViewStore((state) => state.hoveredId)
   const selectedId = useTreeViewStore((state) => state.selectedId)
-  const setManual = useTreeViewStore((state) => state.setManual)
-  const expandSubtree = useTreeViewStore((state) => state.expandSubtree)
 
-  const onExpandOne = useCallback(
-    (id: number) => {
-      setManual(id, 'open')
-    },
-    [setManual],
-  )
-
-  const onExpandSubtree = useCallback(
-    (id: number) => {
-      expandSubtree(id, snapshot)
-    },
-    [expandSubtree, snapshot],
-  )
-
-  const base = useMemo(
-    () => buildBaseLayout(snapshot, visibility, reducedMotion, onExpandOne, onExpandSubtree),
-    [snapshot, visibility, reducedMotion, onExpandOne, onExpandSubtree],
-  )
+  const base = useMemo(() => buildBaseLayout(snapshot, reducedMotion), [snapshot, reducedMotion])
 
   const nodes = useMemo(() => {
     if (hoveredId === null && selectedId === null) return base.nodes

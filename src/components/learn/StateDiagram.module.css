@@ -1,0 +1,40 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  width: 102px;
+  padding: 3px;
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.tile,
+.blank {
+  display: grid;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: var(--radius-xs);
+}
+
+.tile {
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  background: var(--tile-face);
+  border: 1px solid var(--tile-edge);
+  box-shadow: var(--tile-shadow);
+}
+
+.blank {
+  background: var(--blank-face);
+  border: 1px dashed var(--blank-inset);
+  box-shadow: var(--tile-shadow-pressed);
+}
+
+@media (max-width: 560px) {
+  .board {
+    width: 90px;
+  }
+}

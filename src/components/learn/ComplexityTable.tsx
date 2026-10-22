@@ -82,8 +82,8 @@ export default function ComplexityTable() {
         <div>
           <dt>9!/2</dt>
           <dd>
-            {formatNumber(REACHABLE_STATES)} states reachable from a given arrangement. Parity makes
-            the other 9!/2 arrangements unreachable.
+            {formatNumber(REACHABLE_STATES)} states reachable from a given arrangement. The other
+            9!/2 arrangements cannot be reached by legal moves.
           </dd>
         </div>
       </dl>

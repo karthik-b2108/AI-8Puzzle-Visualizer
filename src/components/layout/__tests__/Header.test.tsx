@@ -33,12 +33,10 @@ describe('Header', () => {
 
     expect(screen.getByLabelText('Elapsed engine time')).toHaveTextContent('1.234 s')
     expect(screen.getByLabelText('Elapsed engine time')).toHaveAttribute('data-running', 'true')
-    expect(screen.getByRole('link', { name: 'Visualizer' })).toHaveAttribute('href', '/')
+    expect(screen.getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/')
+    expect(screen.getByRole('link', { name: 'Visualizer' })).toHaveAttribute('href', '/visualizer')
     expect(screen.getByRole('link', { name: 'Learn' })).toHaveAttribute('href', '/learn')
-    expect(screen.getByRole('link', { name: /DFS 8-Puzzle Visualizer home/ })).toHaveAttribute(
-      'href',
-      '/',
-    )
+    expect(screen.getByRole('link', { name: /DFS 8-Puzzle home/ })).toHaveAttribute('href', '/')
   })
 
   it('switches theme through the toggle', async () => {
@@ -56,18 +54,18 @@ describe('Header', () => {
     expect(screen.getByRole('button', { name: 'Switch to light theme' })).toBeInTheDocument()
   })
 
-  it('toggles the sidebar and reflects its open state', async () => {
+  it('toggles the search list and reflects its open state', async () => {
     const user = userEvent.setup()
     const { onToggleSidebar } = setup()
 
-    const toggle = screen.getByRole('button', { name: 'Hide sidebar' })
+    const toggle = screen.getByRole('button', { name: 'Hide search list' })
     expect(toggle).toHaveAttribute('aria-pressed', 'true')
     await user.click(toggle)
     expect(onToggleSidebar).toHaveBeenCalledTimes(1)
   })
 
-  it('hides the sidebar toggle when requested', () => {
+  it('hides the search-list toggle when requested', () => {
     setup({ showSidebarToggle: false })
-    expect(screen.queryByRole('button', { name: /sidebar/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /search list/i })).not.toBeInTheDocument()
   })
 })

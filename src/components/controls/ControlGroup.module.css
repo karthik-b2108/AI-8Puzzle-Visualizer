@@ -2,7 +2,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  gap: var(--space-2);
+  gap: 6px;
 }
 
 /* Icon buttons align with the depth field's input, below its label. */

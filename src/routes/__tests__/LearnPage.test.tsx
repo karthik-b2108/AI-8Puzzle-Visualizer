@@ -119,7 +119,11 @@ describe('LearnPage', () => {
   it('gives every diagram snapshot an accessible name', () => {
     renderPage()
 
-    const images = screen.getAllByRole('img')
+    // The optimality example also renders a small board image; the stack
+    // snapshots are the four inline SVGs.
+    const images = screen
+      .getAllByRole('img')
+      .filter((image) => image.tagName.toLowerCase() === 'svg')
     expect(images).toHaveLength(4)
     expect(images[0]).toHaveAccessibleName(/push the root/i)
     expect(images[1]).toHaveAccessibleName(/pop the top node/i)

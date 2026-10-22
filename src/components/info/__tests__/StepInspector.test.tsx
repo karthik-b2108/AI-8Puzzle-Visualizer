@@ -12,24 +12,22 @@ const initialSnapshot = initial as unknown as SearchSnapshot
 const stepped: StepEvent = { kind: 'step', poppedId: 76, pushed: 0, pruned: 0, visited: true }
 
 describe('StepInspector', () => {
-  it('shows the current node, its depth and its parent', () => {
+  it('shows the current board, node id and depth without state notation', () => {
     render(<StepInspector snapshot={foundSnapshot} narration={stepped} />)
 
     expect(screen.getByRole('heading', { name: 'Step inspector' })).toBeInTheDocument()
     expect(screen.getByText('depth 5')).toBeInTheDocument()
-    expect(screen.getAllByText('123456789').length).toBeGreaterThan(0)
-    expect(screen.getByText('0x75BCD15')).toBeInTheDocument()
     expect(screen.getByText('#76')).toBeInTheDocument()
-    expect(screen.getByLabelText('Current node, state 123456789')).toBeInTheDocument()
-    expect(screen.getByLabelText('Parent node')).toBeInTheDocument()
-    expect(screen.getByText('123459786')).toBeInTheDocument()
-    expect(screen.getByText(/Down/)).toBeInTheDocument()
+    expect(screen.getByLabelText('Current node')).toBeInTheDocument()
+    expect(screen.queryByText('0x75BCD15')).not.toBeInTheDocument()
+    expect(screen.queryByText('123456789')).not.toBeInTheDocument()
+    expect(screen.queryByText('Parent')).not.toBeInTheDocument()
   })
 
   it('narrates the last step in a polite live region', () => {
     render(<StepInspector snapshot={foundSnapshot} narration={stepped} />)
 
-    const narration = screen.getByText('Popped 123456789, pushed 0 children.')
+    const narration = screen.getByText('Popped node #76, pushed 0 children.')
     expect(narration).toHaveAttribute('aria-live', 'polite')
     expect(narration).toHaveAttribute('aria-atomic', 'true')
   })

@@ -95,7 +95,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-4);
-  margin: var(--space-3) 0 0;
+  margin: var(--space-5) 0 0;
   padding: var(--space-3) var(--space-4);
   list-style: none;
   background: var(--surface-2);

@@ -21,7 +21,8 @@ export default function AppHeader() {
       onThemeChange={setTheme}
       sidebarOpen={sidebarOpen}
       onToggleSidebar={toggleSidebar}
-      showSidebarToggle={pathname === '/'}
+      showSidebarToggle={pathname === '/visualizer'}
+      showTimer={pathname === '/visualizer'}
     />
   )
 }

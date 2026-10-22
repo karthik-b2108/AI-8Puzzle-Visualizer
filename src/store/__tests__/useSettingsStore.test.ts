@@ -10,7 +10,6 @@ beforeEach(() => {
     depthLimit: 6,
     theme: 'light',
     sidebarOpen: true,
-    followCamera: true,
   })
 })
 
@@ -31,12 +30,10 @@ describe('useSettingsStore', () => {
     expect(document.documentElement.dataset.theme).toBe('light')
   })
 
-  it('toggles the sidebar and camera follow', () => {
+  it('toggles the sidebar', () => {
     const initial = useSettingsStore.getState().sidebarOpen
     useSettingsStore.getState().toggleSidebar()
     expect(useSettingsStore.getState().sidebarOpen).toBe(!initial)
-    useSettingsStore.getState().setFollowCamera(false)
-    expect(useSettingsStore.getState().followCamera).toBe(false)
   })
 
   it('randomizes to a solvable, non-trivial board', () => {

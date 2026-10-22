@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import Callout from '../components/learn/Callout'
@@ -5,45 +6,36 @@ import ComplexityTable from '../components/learn/ComplexityTable'
 import DfsDiagram from '../components/learn/DfsDiagram'
 import Pseudocode from '../components/learn/Pseudocode'
 import Section from '../components/learn/Section'
+import StateDiagram from '../components/learn/StateDiagram'
 import Toc from '../components/learn/Toc'
 import { LEARN_SECTIONS } from '../components/learn/sections'
+import { useLearnMotion } from '../hooks/useLearnMotion'
 import { formatNumber } from '../utils/format'
 import styles from './LearnPage.module.css'
 
 const REACHABLE_STATES = 181_440
 
 export default function LearnPage() {
+  const pageRef = useRef<HTMLElement>(null)
+  useLearnMotion(pageRef)
+
   return (
-    <main id="main-content" tabIndex={-1} className={styles.page}>
-      <header className={styles.hero}>
-        <div className={styles.heroContent}>
-          <p className={styles.eyebrow}>Learn · Depth-first search</p>
-          <h1 className={styles.title}>How depth-first search solves the 8-puzzle</h1>
-          <p className={styles.lead}>
-            The visualizer is a graph search with a stack, a visited set and a depth limit. This
-            page explains what each piece does, why the search is light on memory but not guaranteed
-            to find the shortest solution, and where its limits are.
-          </p>
-          <ul className={styles.chips} aria-label="At a glance">
-            <li className={styles.chip}>
-              <span className={styles.chipDot} aria-hidden="true" />
-              LIFO frontier
-            </li>
-            <li className={styles.chip}>
-              <span className={styles.chipDot} aria-hidden="true" />
-              Visited set
-            </li>
-            <li className={styles.chip}>
-              <span className={styles.chipDot} aria-hidden="true" />
-              Depth limit 1–30
-            </li>
-            <li className={styles.chip}>
-              <span className={styles.chipDot} aria-hidden="true" />
-              {formatNumber(REACHABLE_STATES)} states max
-            </li>
-          </ul>
-        </div>
-      </header>
+    <main id="main-content" tabIndex={-1} className={styles.page} ref={pageRef}>
+      <div className={styles.progress} data-reading-progress aria-hidden="true" />
+
+      <div className={styles.heroBand}>
+        <header className={styles.hero}>
+          <div className={styles.heroContent}>
+            <p className={styles.eyebrow}>Learn · Depth-first search</p>
+            <h1 className={styles.title}>How depth-first search solves the 8-puzzle</h1>
+            <p className={styles.lead}>
+              The visualizer is a graph search with a stack, a visited set and a depth limit. This
+              page explains what each piece does, why the search is light on memory but not
+              guaranteed to find the shortest solution, and where its limits are.
+            </p>
+          </div>
+        </header>
+      </div>
 
       <div className={styles.layout}>
         <Toc sections={LEARN_SECTIONS} />
@@ -80,8 +72,8 @@ export default function LearnPage() {
             <h3>What you see in the interface</h3>
             <ul>
               <li>
-                The <strong>board</strong> and its 9-digit state, plus the parent node and the move
-                that produced it.
+                The <strong>board</strong> with the tiles touched by the latest move highlighted,
+                plus the current node id and depth.
               </li>
               <li>
                 The <strong>tree</strong>, with one node per generated state. Frontier nodes, visited
@@ -238,10 +230,9 @@ export default function LearnPage() {
             >
               <div className={styles.exampleRow}>
                 <span className={styles.exampleLabel}>Start</span>
-                <span className={styles.exampleValue}>
-                  <code className={styles.state}>952143786</code>
-                  <span className={styles.board}>. 5 2 / 1 4 3 / 7 8 6</span>
-                </span>
+                <div className={styles.exampleValue}>
+                  <StateDiagram state={952143786} label="Start state" />
+                </div>
               </div>
               <div className={styles.exampleRow}>
                 <span className={styles.exampleLabel}>Shortest solution</span>
@@ -301,9 +292,8 @@ export default function LearnPage() {
             <p>
               The 8-puzzle graph is finite. There are 9! = 362,880 arrangements of nine symbols, but
               the blank&apos;s moves generate only even permutations, so exactly half — 9!/2 ={' '}
-              {formatNumber(REACHABLE_STATES)} — are reachable from a given start. The app checks
-              that parity before starting. With each state expanded at most once, an unlimited DFS
-              cannot run forever.
+              {formatNumber(REACHABLE_STATES)} — are reachable from a given start. With each state
+              expanded at most once, an unlimited DFS cannot run forever.
             </p>
 
             <h3>Where the guarantee breaks</h3>
@@ -312,8 +302,7 @@ export default function LearnPage() {
               A solution deeper than <code>m</code> is invisible: every node at the limit is treated
               as a leaf. The app then reports <strong>“not found within depth limit N”</strong>. That
               message does not mean the puzzle is unsolvable; it means this bounded search did not
-              reach the goal. Because the app refuses to start unsolvable pairs, a not-found result
-              in practice is a limit hit.
+              reach the goal. In practice, a not-found result is a limit hit.
             </p>
             <p>
               Running out of stack does not prove the puzzle is unsolvable: it proves this bounded
@@ -496,7 +485,7 @@ export default function LearnPage() {
                 visited set and tree updating live.
               </p>
             </div>
-            <Link to="/" className={styles.cta}>
+            <Link to="/visualizer" className={styles.cta}>
               Open the visualizer
               <ArrowRight size={16} aria-hidden="true" />
             </Link>

@@ -23,17 +23,10 @@
 .main {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 3px;
+  align-items: flex-start;
   min-width: 0;
   flex: 1;
-}
-
-.state {
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  font-variant-numeric: tabular-nums;
-  color: var(--text);
-  letter-spacing: 0.02em;
 }
 
 .meta {

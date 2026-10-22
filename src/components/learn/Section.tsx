@@ -18,7 +18,7 @@ export default function Section({ id, number, title, eyebrow, children }: Sectio
 
   return (
     <section id={id} className={styles.section} aria-labelledby={headingId}>
-      <header className={styles.header}>
+      <header className={styles.header} data-motion="heading">
         <span className={styles.number} aria-hidden="true">
           {String(number).padStart(2, '0')}
         </span>
@@ -29,7 +29,9 @@ export default function Section({ id, number, title, eyebrow, children }: Sectio
           </h2>
         </div>
       </header>
-      <div className={styles.body}>{children}</div>
+      <div className={styles.body} data-motion="body">
+        {children}
+      </div>
     </section>
   )
 }

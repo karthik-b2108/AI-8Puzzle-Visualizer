@@ -20,7 +20,6 @@ export interface SettingsState {
   speed: number
   theme: Theme
   sidebarOpen: boolean
-  followCamera: boolean
   setStart: (state: number) => void
   setGoal: (state: number) => void
   setDepthLimit: (depth: number) => void
@@ -28,7 +27,6 @@ export interface SettingsState {
   setTheme: (theme: Theme) => void
   setSidebarOpen: (open: boolean) => void
   toggleSidebar: () => void
-  setFollowCamera: (follow: boolean) => void
   randomizeStart: () => void
   swapBoards: () => void
   resetBoards: () => void
@@ -70,7 +68,6 @@ export const useSettingsStore = create<SettingsState>()(
       speed: DEFAULT_SPEED,
       theme: initialTheme,
       sidebarOpen: true,
-      followCamera: true,
 
       setStart: (start) => set({ start }),
       setGoal: (goal) => set({ goal }),
@@ -83,7 +80,6 @@ export const useSettingsStore = create<SettingsState>()(
       },
       setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
       toggleSidebar: () => set({ sidebarOpen: !get().sidebarOpen }),
-      setFollowCamera: (followCamera) => set({ followCamera }),
 
       randomizeStart: () => {
         const { start, goal } = get()
@@ -106,7 +102,6 @@ export const useSettingsStore = create<SettingsState>()(
         speed: state.speed,
         theme: state.theme,
         sidebarOpen: state.sidebarOpen,
-        followCamera: state.followCamera,
       }),
       onRehydrateStorage: () => (state) => {
         if (state?.theme) applyTheme(state.theme)

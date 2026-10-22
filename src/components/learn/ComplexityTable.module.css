@@ -87,7 +87,7 @@
 .figure .legend {
   display: grid;
   gap: var(--space-2);
-  margin: var(--space-3) 0 0;
+  margin: var(--space-5) 0 0;
   padding: var(--space-4) var(--space-5);
   background: var(--surface-2);
   border: 1px solid var(--border-subtle);

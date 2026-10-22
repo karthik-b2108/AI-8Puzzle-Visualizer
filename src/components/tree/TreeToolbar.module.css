@@ -1,8 +1,8 @@
 .toolbar {
   display: flex;
-  min-width: 260px;
+  min-width: 0;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-1);
   padding: var(--space-2);
   background: color-mix(in srgb, var(--surface) 92%, transparent);
   border: 1px solid var(--border);
@@ -51,27 +51,8 @@
   outline-offset: 1px;
 }
 
-.active {
-  color: var(--accent-strong);
-  background: var(--accent-soft);
-  border-color: var(--accent-soft-strong);
-}
-
-.active:hover {
-  color: var(--accent-strong);
-  background: var(--accent-soft-strong);
-  border-color: var(--accent);
-}
-
 .iconOnly {
   padding: 5px 6px;
-}
-
-.divider {
-  width: 1px;
-  height: 16px;
-  margin: 0 2px;
-  background: var(--border);
 }
 
 .count {
@@ -84,14 +65,4 @@
 .count strong {
   font-weight: var(--weight-semibold);
   color: var(--text-muted);
-}
-
-@media (max-width: 720px) {
-  .toolbar {
-    min-width: 0;
-  }
-
-  .button span {
-    display: none;
-  }
 }

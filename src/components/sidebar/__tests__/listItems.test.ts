@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { SearchSnapshot } from '../../../contract/types'
 import midRun from '../../../contract/fixtures/mid-run.json'
 import found from '../../../contract/fixtures/found.json'
-import { exploredItems, filterItems, frontierItems, matchesQuery, paddedState } from '../listItems'
+import { exploredItems, filterItems, frontierItems, matchesQuery } from '../listItems'
 
 const mid = midRun as unknown as SearchSnapshot
 const solved = found as unknown as SearchSnapshot
@@ -34,15 +34,9 @@ describe('sidebar list item derivation', () => {
 })
 
 describe('sidebar filtering', () => {
-  it('pads states to nine digits', () => {
-    expect(paddedState(1234)).toBe('000001234')
-    expect(paddedState(123456789)).toBe('123456789')
-  })
-
-  it('matches digits, the raw integer, and node ids', () => {
+  it('matches node ids', () => {
     const [item] = frontierItems(mid)
     expect(item).toBeDefined()
-    expect(matchesQuery(item, paddedState(item.state).slice(0, 4))).toBe(true)
     expect(matchesQuery(item, String(item.id))).toBe(true)
     expect(matchesQuery(item, '')).toBe(true)
     expect(matchesQuery(item, 'zzz')).toBe(false)
@@ -51,10 +45,8 @@ describe('sidebar filtering', () => {
   it('filters lists and ignores whitespace', () => {
     const items = frontierItems(mid)
     const target = items[0]
-    const filtered = filterItems(items, ` ${paddedState(target.state).slice(0, 3)} `)
-    expect(filtered.every((item) => paddedState(item.state).includes(paddedState(target.state).slice(0, 3)))).toBe(
-      true,
-    )
+    const filtered = filterItems(items, ` ${target.id} `)
+    expect(filtered.some((item) => item.id === target.id)).toBe(true)
     expect(filterItems(items, '   ')).toHaveLength(items.length)
   })
 })

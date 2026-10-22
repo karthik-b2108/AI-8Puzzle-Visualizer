@@ -2,7 +2,6 @@ import { memo } from 'react'
 import type { AriaAttributes, CSSProperties } from 'react'
 import type { Status } from '../../contract/types'
 import MiniBoard from './MiniBoard'
-import { paddedState } from './listItems'
 import styles from './StateRow.module.css'
 
 export interface StateRowProps {
@@ -47,17 +46,14 @@ function StateRow({
       onBlur={onLeave}
       style={style}
       {...ariaAttributes}
-      aria-label={`Node ${id}, state ${paddedState(state)}, depth ${depth}, ${status}${
-        isNext ? ', next to pop' : ''
-      }`}
+      aria-label={`Node ${id}, depth ${depth}, ${status}${isNext ? ', next to pop' : ''}`}
     >
       <MiniBoard state={state} />
       <span className={styles.main}>
-        <span className={styles.state}>{paddedState(state)}</span>
+        <span className={styles.status} data-status={status}>
+          {status}
+        </span>
         <span className={styles.meta}>
-          <span className={styles.status} data-status={status}>
-            {status}
-          </span>
           <span>depth {depth}</span>
           {order !== undefined ? <span>#{order}</span> : null}
         </span>

@@ -103,8 +103,8 @@ const VIEW_WIDTH = 320
 const VIEW_HEIGHT = 180
 const NODE_RADIUS = 13
 
-const STACK_X = 198
-const STACK_WIDTH = 110
+const STACK_X = 218
+const STACK_WIDTH = 80
 const STACK_ROW_HEIGHT = 24
 const STACK_GAP = 4
 const STACK_BOTTOM = 166
@@ -303,10 +303,6 @@ export default function DfsDiagram() {
           Dead end (no new children)
         </li>
       </ul>
-      <p className={styles.note}>
-        Letters stand for states; the tree is schematic. The stack grows to the right and the
-        highlighted row is the next node to pop.
-      </p>
     </figure>
   )
 }

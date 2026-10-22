@@ -34,8 +34,6 @@ export default function VisualizerPage() {
   const goal = useSettingsStore((state) => state.goal)
   const depthLimit = useSettingsStore((state) => state.depthLimit)
   const speed = useSettingsStore((state) => state.speed)
-  const followCamera = useSettingsStore((state) => state.followCamera)
-  const setFollowCamera = useSettingsStore((state) => state.setFollowCamera)
   const sidebarOpen = useSettingsStore((state) => state.sidebarOpen)
   const setStart = useSettingsStore((state) => state.setStart)
   const setGoal = useSettingsStore((state) => state.setGoal)
@@ -79,7 +77,9 @@ export default function VisualizerPage() {
   const handleStart = useCallback(() => {
     stopAutoplay()
     configure({ start, goal, depthLimit })
-  }, [configure, depthLimit, goal, start, stopAutoplay])
+    step()
+    setAutoplay(true)
+  }, [configure, depthLimit, goal, setAutoplay, start, step, stopAutoplay])
 
   const handleStep = useCallback(() => {
     if (dirty) return
@@ -155,7 +155,7 @@ export default function VisualizerPage() {
 
   return (
     <main id="main-content" tabIndex={-1} className={styles.page}>
-      <section className={styles.top} aria-label="Setup and current step">
+      <aside className={styles.sidebar} aria-label="Setup and step inspector">
         <StartGoalPanel
           start={start}
           goal={goal}
@@ -167,86 +167,81 @@ export default function VisualizerPage() {
           error={solvable ? null : UNREACHABLE}
           disabled={busy}
         />
+        <hr className={styles.rule} />
         <StepInspector snapshot={snapshot} narration={lastAction} />
-      </section>
+      </aside>
 
       <section className={styles.workspace} aria-label="Search tree">
-        <SidebarShell open={sidebarOpen} onToggle={toggleSidebar} snapshot={snapshot} />
-        <div className={styles.canvasColumn}>
-          <ControlBar
-            canStep={canStep}
-            canUndo={!dirty && snapshot.canUndo}
-            canRedo={!dirty && snapshot.canRedo}
-            running={autoplay.running}
-            hasResult={snapshot.result !== null}
-            dirty={dirty}
-            speed={speed}
-            depthLimit={depthLimit}
-            onStep={handleStep}
-            onUndo={handleUndo}
-            onRedo={handleRedo}
-            onReset={handleReset}
-            onRunToEnd={handleRunToEnd}
-            onToggleAutoplay={handleToggleAutoplay}
-            onSpeedChange={setSpeed}
-            onDepthLimitChange={handleDepthLimit}
-            onRandomize={handleRandomize}
-            onSwap={handleSwapBoards}
+        <div className={styles.canvasWrap}>
+          <TreeCanvas
+            snapshot={snapshot}
+            reducedMotion={reducedMotion}
+            searchList={
+              <SidebarShell open={sidebarOpen} onToggle={toggleSidebar} snapshot={snapshot} />
+            }
           />
 
-          <div className={styles.canvasWrap}>
-            <TreeCanvas snapshot={snapshot} followCamera={followCamera} reducedMotion={reducedMotion} />
-
-            <div className={styles.cameraToggle}>
-              <label className={styles.cameraLabel}>
-                <input
-                  type="checkbox"
-                  checked={followCamera}
-                  onChange={(event) => setFollowCamera(event.target.checked)}
-                />
-                Follow camera
-              </label>
-            </div>
-
-            <div className={styles.overlays}>
-              {snapshot.result ? (
-                <ResultCard
-                  result={snapshot.result}
-                  config={snapshot.config}
-                  replaying={replay.replaying}
-                  onReplay={replay.start}
-                  reducedMotion={reducedMotion}
-                />
-              ) : null}
-            </div>
-
-            {replay.replaying && replay.state !== null ? (
-              <div className={styles.replayPanel} role="group" aria-label="Solution replay">
-                <header className={styles.replayHeader}>
-                  <div>
-                    <span className={styles.replayTitle}>Replaying solution</span>
-                    <span className={styles.replayCount}>
-                      {replay.frame} / {replay.total}
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    className={styles.replayClose}
-                    onClick={replay.stop}
-                    aria-label="Close solution replay"
-                  >
-                    <X size={16} />
-                  </button>
-                </header>
-                <PuzzleBoard
-                  state={replay.state}
-                  size="md"
-                  highlightIndices={replay.movedIndices}
-                  label={`Replay frame ${replay.frame} of ${replay.total}`}
-                />
-              </div>
-            ) : null}
+          <div className={styles.controlsDeck}>
+            <ControlBar
+              canStep={canStep}
+              canUndo={!dirty && snapshot.canUndo}
+              canRedo={!dirty && snapshot.canRedo}
+              running={autoplay.running}
+              hasResult={snapshot.result !== null}
+              dirty={dirty}
+              speed={speed}
+              depthLimit={depthLimit}
+              onStep={handleStep}
+              onUndo={handleUndo}
+              onRedo={handleRedo}
+              onReset={handleReset}
+              onRunToEnd={handleRunToEnd}
+              onToggleAutoplay={handleToggleAutoplay}
+              onSpeedChange={setSpeed}
+              onDepthLimitChange={handleDepthLimit}
+              onRandomize={handleRandomize}
+              onSwap={handleSwapBoards}
+            />
           </div>
+
+          {snapshot.result ? (
+            <div className={styles.overlays}>
+              <ResultCard
+                result={snapshot.result}
+                config={snapshot.config}
+                replaying={replay.replaying}
+                onReplay={replay.start}
+                reducedMotion={reducedMotion}
+              />
+            </div>
+          ) : null}
+
+          {replay.replaying && replay.state !== null ? (
+            <div className={styles.replayPanel} role="group" aria-label="Solution replay">
+              <header className={styles.replayHeader}>
+                <div>
+                  <span className={styles.replayTitle}>Replaying solution</span>
+                  <span className={styles.replayCount}>
+                    {replay.frame} / {replay.total}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  className={styles.replayClose}
+                  onClick={replay.stop}
+                  aria-label="Close solution replay"
+                >
+                  <X size={16} />
+                </button>
+              </header>
+              <PuzzleBoard
+                state={replay.state}
+                size="md"
+                highlightIndices={replay.movedIndices}
+                label={`Replay frame ${replay.frame} of ${replay.total}`}
+              />
+            </div>
+          ) : null}
         </div>
       </section>
     </main>

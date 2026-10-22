@@ -24,7 +24,6 @@ import type { TreeCanvasProps } from '../../contract/ui'
 import { useTreeLayout, NODE_HEIGHT, NODE_WIDTH } from '../../hooks/useTreeLayout'
 import type { StateNodeData, TreeEdgeData } from '../../hooks/useTreeLayout'
 import { useTreeViewStore } from '../../store/useTreeViewStore'
-import { computeVisibility } from './collapse'
 import { AnimatedEdge } from './AnimatedEdge'
 import { Legend } from './Legend'
 import { StateNode } from './StateNode'
@@ -54,7 +53,6 @@ interface EdgePulse {
 interface Ghost {
   key: string
   id: number
-  state: number
   status: Status
   x: number
   y: number
@@ -111,35 +109,15 @@ function buildPulseEdges(
   return edges
 }
 
-function TreeCanvasInner({ snapshot, followCamera, reducedMotion }: TreeCanvasProps) {
+function TreeCanvasInner({ snapshot, reducedMotion, searchList }: TreeCanvasProps) {
   const { setCenter, fitView } = useReactFlow()
   const { x: viewX, y: viewY, zoom } = useViewport()
-  const manual = useTreeViewStore((state) => state.manual)
-  const autoCollapse = useTreeViewStore((state) => state.autoCollapse)
-  const collapsed = useTreeViewStore((state) => state.collapsed)
   const cameraTargetId = useTreeViewStore((state) => state.cameraTargetId)
-  const setCollapsed = useTreeViewStore((state) => state.setCollapsed)
   const setHovered = useTreeViewStore((state) => state.setHovered)
   const setSelected = useTreeViewStore((state) => state.setSelected)
-  const expandAncestors = useTreeViewStore((state) => state.expandAncestors)
-  const expandAll = useTreeViewStore((state) => state.expandAll)
-  const collapseFinished = useTreeViewStore((state) => state.collapseFinished)
-  const setAutoCollapse = useTreeViewStore((state) => state.setAutoCollapse)
   const clearCameraTarget = useTreeViewStore((state) => state.clearCameraTarget)
 
-  /** Effective visibility, including both manual and automatic collapsing. */
-  const visibility = useMemo(
-    () => computeVisibility(snapshot, manual, autoCollapse),
-    [snapshot, manual, autoCollapse],
-  )
-
-  // Publish the automatic collapsed set for the toolbar/sidebar without
-  // recreating it when the contents have not changed.
-  useEffect(() => {
-    setCollapsed(visibility.collapsed)
-  }, [visibility, setCollapsed])
-
-  const { nodes, edges } = useTreeLayout(snapshot, visibility, reducedMotion)
+  const { nodes, edges } = useTreeLayout(snapshot, reducedMotion)
 
   const [pulse, setPulse] = useState<EdgePulse | null>(null)
   const [ghosts, setGhosts] = useState<Ghost[]>([])
@@ -185,7 +163,6 @@ function TreeCanvasInner({ snapshot, followCamera, reducedMotion }: TreeCanvasPr
         removed.push({
           key: `${id}-${Date.now()}`,
           id,
-          state: node.state,
           status: node.status,
           x: position.x,
           y: position.y,
@@ -258,8 +235,6 @@ function TreeCanvasInner({ snapshot, followCamera, reducedMotion }: TreeCanvasPr
   }, [nodes])
 
   const initialized = useRef(false)
-  const lastCurrentId = useRef<number | null>(snapshot.currentId)
-  const pendingTarget = useRef<number | null>(null)
 
   const onInit = useCallback(
     (instance: ReactFlowInstance<Node<StateNodeData>, Edge<TreeEdgeData>>) => {
@@ -270,47 +245,16 @@ function TreeCanvasInner({ snapshot, followCamera, reducedMotion }: TreeCanvasPr
     [reducedMotion],
   )
 
-  // Follow the live search, but never pan into a collapsed subtree.
+  // Sidebar selection focus: centre the chosen node.
   useEffect(() => {
-    const id = snapshot.currentId
-    if (!followCamera || id === null) {
-      lastCurrentId.current = id
-      return
-    }
-    if (lastCurrentId.current === id) return
-    lastCurrentId.current = id
-    const position = positions.get(id)
-    if (!position) return
-    setCenter(position.x + NODE_WIDTH / 2, position.y + NODE_HEIGHT / 2, {
-      zoom: 1,
-      duration: reducedMotion ? 0 : 450,
-    })
-  }, [snapshot.currentId, followCamera, positions, setCenter, reducedMotion])
-
-  // Sidebar/selection focus: expand hidden ancestors, then centre the node.
-  useEffect(() => {
-    if (cameraTargetId === null) {
-      pendingTarget.current = null
-      return
-    }
+    if (cameraTargetId === null) return
     if (!snapshot.nodes[cameraTargetId]) {
       clearCameraTarget()
       return
     }
     const position = positions.get(cameraTargetId)
-    if (!position) {
-      if (pendingTarget.current === cameraTargetId) {
-        // Expanding did not reveal it (stale snapshot); stop retrying.
-        pendingTarget.current = null
-        clearCameraTarget()
-        return
-      }
-      pendingTarget.current = cameraTargetId
-      expandAncestors(cameraTargetId, snapshot)
-      return
-    }
+    if (!position) return
 
-    pendingTarget.current = null
     const center = () => {
       setCenter(position.x + NODE_WIDTH / 2, position.y + NODE_HEIGHT / 2, {
         zoom: 1,
@@ -324,15 +268,7 @@ function TreeCanvasInner({ snapshot, followCamera, reducedMotion }: TreeCanvasPr
     }
     center()
     return undefined
-  }, [
-    cameraTargetId,
-    positions,
-    snapshot,
-    expandAncestors,
-    clearCameraTarget,
-    setCenter,
-    reducedMotion,
-  ])
+  }, [cameraTargetId, positions, snapshot, clearCameraTarget, setCenter, reducedMotion])
 
   const onNodeClick: NodeMouseHandler<Node<StateNodeData>> = useCallback(
     (_event, node) => {
@@ -386,7 +322,7 @@ function TreeCanvasInner({ snapshot, followCamera, reducedMotion }: TreeCanvasPr
         zoomOnDoubleClick={false}
         minZoom={0.1}
         maxZoom={1.6}
-        onlyRenderVisibleElements
+        onlyRenderVisibleElements={false}
         attributionPosition="bottom-center"
       >
         <Background
@@ -413,18 +349,15 @@ function TreeCanvasInner({ snapshot, followCamera, reducedMotion }: TreeCanvasPr
         />
         <Panel position="top-left" className={styles.panel}>
           <TreeToolbar
-            visibleCount={visibility.visible.size}
-            totalCount={totalCount}
-            collapsedCount={collapsed.size}
-            autoCollapse={autoCollapse}
-            onExpandAll={expandAll}
-            onCollapseFinished={() => collapseFinished(snapshot)}
-            onToggleAutoCollapse={() => setAutoCollapse(!autoCollapse)}
+            nodeCount={totalCount}
             onFitView={() => fitView({ padding: 0.2, duration: reducedMotion ? 0 : 300 })}
           />
         </Panel>
         <Panel position="top-right" className={styles.panel}>
-          <Legend />
+          <div className={styles.panelStack}>
+            <Legend />
+            {searchList}
+          </div>
         </Panel>
       </ReactFlow>
       {ghosts.length > 0 ? (
@@ -440,11 +373,8 @@ function TreeCanvasInner({ snapshot, followCamera, reducedMotion }: TreeCanvasPr
                 width: NODE_WIDTH * zoom,
                 height: NODE_HEIGHT * zoom,
                 animationDelay: `${ghost.delay}ms`,
-                fontSize: `${10 * zoom}px`,
               }}
-            >
-              <span>{String(ghost.state).padStart(9, '0')}</span>
-            </div>
+            />
           ))}
         </div>
       ) : null}

@@ -94,29 +94,19 @@ export interface HeaderProps {
   onToggleSidebar: () => void
   /** Hide the sidebar toggle on pages without a sidebar. */
   showSidebarToggle?: boolean
+  /** Hide the engine timer on pages that do not run a search. */
+  showTimer?: boolean
 }
 
 /* ---------------------------------- tree ---------------------------------- */
 
-export type CollapseMode = 'open' | 'closed'
-
 export interface TreeViewState {
-  collapsed: ReadonlySet<number>
-  /** Manual overrides always win over the automatic collapse rules. */
-  manual: ReadonlyMap<number, CollapseMode>
   hoveredId: number | null
   selectedId: number | null
-  autoCollapse: boolean
   /** Set by the sidebar; TreeCanvas pans to it and clears it. */
   cameraTargetId: number | null
   setHovered: (id: number | null) => void
   setSelected: (id: number | null) => void
-  toggleCollapsed: (id: number) => void
-  setManual: (id: number, mode: CollapseMode) => void
-  expandAll: () => void
-  collapseFinished: (snapshot: SearchSnapshot) => void
-  setAutoCollapse: (on: boolean) => void
-  expandAncestors: (id: number, snapshot: SearchSnapshot) => void
   focusNode: (id: number, snapshot: SearchSnapshot) => void
   clearCameraTarget: () => void
   reset: () => void
@@ -124,8 +114,9 @@ export interface TreeViewState {
 
 export interface TreeCanvasProps {
   snapshot: SearchSnapshot
-  followCamera: boolean
   reducedMotion: boolean
+  /** Optional search-list deck rendered in the canvas' top-right panel stack. */
+  searchList?: ReactNode
 }
 
 /* --------------------------------- info ----------------------------------- */

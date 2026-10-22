@@ -1,12 +1,19 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { MouseEvent } from 'react'
-import { Link } from 'react-router-dom'
-import { ArrowLeft, ChevronDown } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import type { LearnSectionMeta } from './sections'
 import styles from './Toc.module.css'
 
+gsap.registerPlugin(ScrollTrigger)
+
 /** Height reserved for the sticky app header when computing the reading line. */
 const HEADER_OFFSET = 76
+/** Fraction of the viewport where the reading line sits. */
+const FOCUS_LINE = 0.38
+/** Fraction of the viewport over which focus hands off between sections. */
+const FOCUS_FADE = 0.32
 
 interface TocProps {
   sections: readonly LearnSectionMeta[]
@@ -20,32 +27,48 @@ function prefersReducedMotion(): boolean {
 }
 
 /**
- * Sticky table of contents. Uses buttons rather than `#id` anchors because the
- * app is rendered under a HashRouter, where a bare hash would replace the route.
+ * Sticky table of contents shaped as a vertical timeline. Buttons rather than
+ * `#id` anchors are used because the app renders under a HashRouter, where a
+ * bare hash would replace the route.
+ *
+ * GSAP ScrollTrigger drives a per-section focus value: the section crossing the
+ * reading line is elevated, and neighbouring labels/markers are displaced by
+ * the expansion. The value is interpolated continuously from scroll progress.
  */
 export default function Toc({ sections }: TocProps) {
   const [activeId, setActiveId] = useState(sections[0]?.id ?? '')
   const [open, setOpen] = useState(false)
-  const ids = useMemo(() => sections.map((section) => section.id), [sections])
+  const listRef = useRef<HTMLOListElement>(null)
 
   useEffect(() => {
-    const elements = ids
-      .map((id) => document.getElementById(id))
-      .filter((element): element is HTMLElement => element !== null)
+    const list = listRef.current
+    if (!list) return
 
-    if (elements.length === 0) return
+    const entries = Array.from(list.querySelectorAll<HTMLElement>('[data-toc-item]')).flatMap(
+      (item) => {
+        const id = item.dataset.sectionId ?? ''
+        const section = document.getElementById(id)
+        return section ? [{ id, item, section }] : []
+      },
+    )
+    if (entries.length === 0) return
 
-    // Graceful fallback for browsers without IntersectionObserver.
-    if (typeof IntersectionObserver === 'undefined') {
+    const setFocus = (item: HTMLElement, focus: number) => {
+      item.style.setProperty('--toc-focus', focus.toFixed(4))
+    }
+
+    if (prefersReducedMotion()) {
+      for (const entry of entries) setFocus(entry.item, 0)
+
       const update = () => {
-        let current = ids[0] ?? ''
-        for (const id of ids) {
-          const element = document.getElementById(id)
-          if (element && element.getBoundingClientRect().top <= HEADER_OFFSET + 24) {
-            current = id
-          }
+        let current = entries[0]?.id ?? ''
+        for (const entry of entries) {
+          if (entry.section.getBoundingClientRect().top <= HEADER_OFFSET + 24) current = entry.id
         }
         setActiveId(current)
+        for (const entry of entries) {
+          setFocus(entry.item, entry.id === current ? 1 : 0)
+        }
       }
 
       update()
@@ -57,22 +80,47 @@ export default function Toc({ sections }: TocProps) {
       }
     }
 
-    const visible = new Set<string>()
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) visible.add(entry.target.id)
-          else visible.delete(entry.target.id)
-        }
-        const next = ids.find((id) => visible.has(id))
-        if (next) setActiveId(next)
-      },
-      { rootMargin: `-${HEADER_OFFSET}px 0px -60% 0px`, threshold: 0 },
-    )
+    const update = () => {
+      const line = window.innerHeight * FOCUS_LINE
+      const fade = Math.max(window.innerHeight * FOCUS_FADE, 140)
+      let bestId = entries[0]?.id ?? ''
+      let bestFocus = -1
 
-    for (const element of elements) observer.observe(element)
-    return () => observer.disconnect()
-  }, [ids])
+      for (const entry of entries) {
+        const rect = entry.section.getBoundingClientRect()
+        let focus = 1
+        if (line < rect.top) focus = 1 - (rect.top - line) / fade
+        else if (line > rect.bottom) focus = 1 - (line - rect.bottom) / fade
+
+        focus = Math.min(1, Math.max(0, focus))
+        setFocus(entry.item, focus)
+
+        if (focus > bestFocus) {
+          bestFocus = focus
+          bestId = entry.id
+        }
+      }
+
+      if (bestId) {
+        setActiveId((current) => (current === bestId ? current : bestId))
+      }
+    }
+
+    const trigger = ScrollTrigger.create({
+      start: 0,
+      end: 'max',
+      onUpdate: update,
+      onRefresh: update,
+    })
+
+    update()
+    const refreshFrame = window.requestAnimationFrame(() => ScrollTrigger.refresh())
+
+    return () => {
+      window.cancelAnimationFrame(refreshFrame)
+      trigger.kill()
+    }
+  }, [sections])
 
   const goTo = (event: MouseEvent<HTMLButtonElement>, id: string) => {
     event.preventDefault()
@@ -112,17 +160,30 @@ export default function Toc({ sections }: TocProps) {
         </p>
 
         <nav aria-label="Sections">
-          <ol id="learn-toc-list" className={styles.list} data-open={open ? 'true' : 'false'}>
+          <ol
+            id="learn-toc-list"
+            ref={listRef}
+            className={styles.list}
+            data-open={open ? 'true' : 'false'}
+          >
             {sections.map((section) => {
               const isActive = section.id === activeId
               return (
-                <li key={section.id}>
+                <li
+                  key={section.id}
+                  className={styles.item}
+                  data-toc-item
+                  data-section-id={section.id}
+                >
                   <button
                     type="button"
                     className={isActive ? styles.linkActive : styles.link}
                     aria-current={isActive ? 'location' : undefined}
                     onClick={(event) => goTo(event, section.id)}
                   >
+                    <span className={styles.markerCell} aria-hidden="true">
+                      <span className={styles.marker} />
+                    </span>
                     <span className={styles.number} aria-hidden="true">
                       {String(section.number).padStart(2, '0')}
                     </span>
@@ -133,11 +194,6 @@ export default function Toc({ sections }: TocProps) {
             })}
           </ol>
         </nav>
-
-        <Link to="/" className={styles.back}>
-          <ArrowLeft size={14} aria-hidden="true" />
-          Back to visualizer
-        </Link>
       </div>
     </aside>
   )

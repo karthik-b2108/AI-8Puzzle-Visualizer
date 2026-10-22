@@ -5,8 +5,6 @@ import { Handle, Position } from '@xyflow/react'
 import type { Node, NodeProps } from '@xyflow/react'
 import type { StateNodeData } from '../../hooks/useTreeLayout'
 import { useTreeViewStore } from '../../store/useTreeViewStore'
-import { CollapsedBadge } from './CollapsedBadge'
-import { STATUS_LABEL } from './status'
 import styles from './StateNode.module.css'
 
 export type StateNodeType = Node<StateNodeData, 'state'>
@@ -16,19 +14,8 @@ function digitsOf(state: number): number[] {
 }
 
 function StateNodeComponent({ data }: NodeProps<StateNodeType>) {
-  const {
-    node,
-    hidden,
-    isCurrent,
-    isHovered,
-    isSelected,
-    isOnSolutionPath,
-    solutionIndex,
-    isGoal,
-    depth,
-    enterFrom,
-    reducedMotion,
-  } = data
+  const { node, isCurrent, isHovered, isSelected, isOnSolutionPath, solutionIndex, depth, enterFrom, reducedMotion } =
+    data
   const setSelected = useTreeViewStore((state) => state.setSelected)
   const digits = digitsOf(node.state)
   const from = enterFrom ?? { x: 0, y: -12 }
@@ -51,8 +38,6 @@ function StateNodeComponent({ data }: NodeProps<StateNodeType>) {
       data-hovered={isHovered || undefined}
       data-selected={isSelected || undefined}
       data-solution={isOnSolutionPath || undefined}
-      data-goal={isGoal || undefined}
-      data-collapsed={data.isCollapsed || undefined}
       data-duplicate={node.status === 'duplicate' || undefined}
       style={style}
       initial={reducedMotion ? false : { opacity: 0, scale: 0.72, x: from.x, y: from.y }}
@@ -75,25 +60,9 @@ function StateNodeComponent({ data }: NodeProps<StateNodeType>) {
           </span>
         ))}
       </span>
-      <span className={styles.meta}>
-        <span className={styles.state}>{String(node.state).padStart(9, '0')}</span>
-        <span className={styles.sub}>
-          <span className={styles.depth}>d{depth}</span>
-          <span className={styles.statusLabel}>{STATUS_LABEL[node.status]}</span>
-        </span>
-      </span>
-
-      {hidden && hidden.total > 0 ? (
-        <CollapsedBadge
-          id={node.id}
-          hidden={hidden}
-          onExpandOne={data.onExpandOne}
-          onExpandSubtree={data.onExpandSubtree}
-        />
-      ) : null}
 
       <span className="sr-only">
-        Node {node.id}, state {node.state}, depth {depth}, {node.status}
+        Node {node.id}, depth {depth}, {node.status}
       </span>
 
       <Handle

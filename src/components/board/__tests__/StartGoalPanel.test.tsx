@@ -57,7 +57,7 @@ describe('StartGoalPanel', () => {
     const user = userEvent.setup()
     const { onGoalChange } = setup()
 
-    const goal = within(screen.getByRole('region', { name: 'Goal state' }))
+    const goal = within(screen.getByRole('region', { name: 'End state' }))
     await user.click(goal.getByRole('button', { name: 'Tile 1, row 1, column 1' }))
     await user.click(goal.getByRole('button', { name: 'Tile 2, row 1, column 2' }))
 

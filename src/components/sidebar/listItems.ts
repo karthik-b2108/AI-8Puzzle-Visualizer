@@ -51,19 +51,11 @@ export function exploredItems(snapshot: SearchSnapshot): NodeListItem[] {
   return items
 }
 
-export function paddedState(state: number): string {
-  return String(state).padStart(9, '0')
-}
-
-/** Digits, the raw integer or the node id can all match the filter. */
+/** The node id can match the filter. */
 export function matchesQuery(item: NodeListItem, query: string): boolean {
   const needle = query.trim().replace(/\s+/g, '')
   if (needle.length === 0) return true
-  return (
-    paddedState(item.state).includes(needle) ||
-    String(item.state).includes(needle) ||
-    String(item.id).includes(needle)
-  )
+  return String(item.id).includes(needle)
 }
 
 export function filterItems(items: NodeListItem[], query: string): NodeListItem[] {

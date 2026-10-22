@@ -6,7 +6,7 @@ import IconButton from '../controls/IconButton'
 import ThemeToggle from './ThemeToggle'
 import styles from './Header.module.css'
 
-/** Top bar: brand, routes, live timer, theme switch and sidebar toggle. */
+/** Top bar: brand, routes, live timer, theme switch and search-list toggle. */
 export default function Header({
   elapsedMs,
   running,
@@ -15,13 +15,14 @@ export default function Header({
   sidebarOpen,
   onToggleSidebar,
   showSidebarToggle = true,
+  showTimer = true,
 }: HeaderProps) {
-  const sidebarLabel = sidebarOpen ? 'Hide sidebar' : 'Show sidebar'
+  const sidebarLabel = sidebarOpen ? 'Hide search list' : 'Show search list'
 
   return (
     <header className={styles.header}>
       <div className={styles.left}>
-        <NavLink to="/" end className={styles.brand} aria-label="DFS 8-Puzzle Visualizer home">
+        <NavLink to="/" end className={styles.brand} aria-label="DFS 8-Puzzle home">
           <span className={styles.mark} aria-hidden="true">
             <GitBranch />
           </span>
@@ -36,6 +37,12 @@ export default function Header({
             end
             className={({ isActive }) => (isActive ? styles.linkActive : styles.link)}
           >
+            Home
+          </NavLink>
+          <NavLink
+            to="/visualizer"
+            className={({ isActive }) => (isActive ? styles.linkActive : styles.link)}
+          >
             Visualizer
           </NavLink>
           <NavLink
@@ -48,7 +55,7 @@ export default function Header({
       </div>
 
       <div className={styles.right}>
-        <TimerChip elapsedMs={elapsedMs} running={running} />
+        {showTimer ? <TimerChip elapsedMs={elapsedMs} running={running} /> : null}
         <ThemeToggle theme={theme} onThemeChange={onThemeChange} />
         {showSidebarToggle ? (
           <IconButton

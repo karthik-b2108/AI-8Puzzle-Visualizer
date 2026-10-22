@@ -65,8 +65,8 @@ export default function SidebarTabs({ snapshot }: SidebarTabsProps) {
         <input
           type="search"
           className={styles.input}
-          placeholder="Filter by digits or node"
-          aria-label="Filter by digits or node id"
+          placeholder="Filter by node id"
+          aria-label="Filter by node id"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           spellCheck={false}

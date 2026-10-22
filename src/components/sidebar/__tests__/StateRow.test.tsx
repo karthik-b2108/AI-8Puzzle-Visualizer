@@ -3,9 +3,9 @@ import { describe, expect, it, vi } from 'vitest'
 import StateRow from '../StateRow'
 
 describe('StateRow', () => {
-  it('shows the padded state, status and depth', () => {
+  it('shows the board, status and depth without state notation', () => {
     render(<StateRow id={12} state={1234} depth={3} status="frontier" isNext order={4} />)
-    expect(screen.getByText('000001234')).toBeInTheDocument()
+    expect(screen.queryByText('000001234')).not.toBeInTheDocument()
     expect(screen.getByText('frontier')).toBeInTheDocument()
     expect(screen.getByText('depth 3')).toBeInTheDocument()
     expect(screen.getByText('#4')).toBeInTheDocument()
@@ -28,7 +28,7 @@ describe('StateRow', () => {
       />,
     )
     const row = screen.getByRole('button')
-    expect(row).toHaveAccessibleName('Node 7, state 987654321, depth 2, visited')
+    expect(row).toHaveAccessibleName('Node 7, depth 2, visited')
     fireEvent.click(row)
     fireEvent.mouseEnter(row)
     fireEvent.mouseLeave(row)

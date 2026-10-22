@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="DFS 8-puzzle">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#3730a3"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#g)"/>
+  <g fill="#fff">
+    <rect x="12" y="12" width="11" height="11" rx="2.5" opacity="0.95"/>
+    <rect x="26.5" y="12" width="11" height="11" rx="2.5" opacity="0.95"/>
+    <rect x="41" y="12" width="11" height="11" rx="2.5" opacity="0.45"/>
+    <rect x="12" y="26.5" width="11" height="11" rx="2.5" opacity="0.95"/>
+    <rect x="26.5" y="26.5" width="11" height="11" rx="2.5" opacity="0.45"/>
+    <rect x="41" y="26.5" width="11" height="11" rx="2.5" opacity="0.95"/>
+    <rect x="12" y="41" width="11" height="11" rx="2.5" opacity="0.45"/>
+    <rect x="26.5" y="41" width="11" height="11" rx="2.5" opacity="0.95"/>
+    <rect x="41" y="41" width="11" height="11" rx="2.5" opacity="0.95"/>
+  </g>
+  <path d="M46.5 17.5v10.5H34" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M38 24l-4.5 4 4.5 4" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

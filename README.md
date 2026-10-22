@@ -16,15 +16,15 @@ Implemented Depth First Search, limited to a maximum depth of 30 for time and me
 
 - Home page
 
-![Home Page](docs/screenshots/Home.png)
+![Home Page](public/screenshots/Home.png)
 
 - Visualizer Page
 
-![Visualizer Page](docs/screenshots/Visualizer.png)
+![Visualizer Page](public/screenshots/Visualizer.png)
 
 - Learning Page
 
-![Learning Page](docs/screenshots/Learn.png)
+![Learning Page](public/screenshots/Learn.png)
 
 ## GitHub URL
 

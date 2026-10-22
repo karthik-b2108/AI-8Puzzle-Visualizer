@@ -3,7 +3,6 @@ import { useId } from 'react'
 import {
   MAX_SPEED,
   MIN_SPEED,
-  SPEED_PRESETS,
 } from '../../contract/defaults'
 import styles from './SpeedSlider.module.css'
 

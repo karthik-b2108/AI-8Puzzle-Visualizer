@@ -25,7 +25,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-docs/
+history/
 
 # TypeScript build info
 .tsbuildinfo/
